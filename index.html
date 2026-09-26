@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Editor Staff v8 · Felix Felicis GdR</title>
+<title>Editor Staff v10 · Felix Felicis GdR</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Labrada:wght@400;500;700&display=swap');
 @font-face{font-family:'Federo';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/federo/v17/iJWFBX-cbD_ETsbWilmf.woff2') format('woff2')}
@@ -35,7 +35,7 @@
 .topbar{position:sticky;top:0;z-index:60;min-height:var(--top);display:flex;align-items:center;gap:10px;padding:10px 18px;background:rgba(255,252,247,.97);border-bottom:1px solid #d7c6ad;box-shadow:0 5px 20px rgba(70,52,33,.08);backdrop-filter:blur(8px)}
 .brand{min-width:260px}.brand b{display:block;font-family:'magic','Federo',serif;font-size:1.75rem;font-weight:400;color:#5d4435;line-height:1}.brand small{display:block;margin-top:4px;color:#8d7e6d;font-size:.76rem}
 .connection{display:flex;align-items:center;gap:7px;min-width:0;flex:1;color:#766a5e;font-size:.79rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border:1px solid #d8c9b5;border-radius:999px;background:#fff;color:#786957;font-size:.7rem}.pill.ok{border-color:#b9d0bd;background:#f3faf4;color:#397047}.pill.warn{border-color:#e4c89a;background:#fff9ec;color:#8a6527}
-.top-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-left:auto}.btn{border:1px solid #cdbb9f;border-radius:8px;background:#fffdf9;color:#625344;padding:8px 11px;box-shadow:0 1px 0 rgba(255,255,255,.8)}.btn:hover{border-color:#aa8750;background:#fffaf0}.btn.primary{background:#6d522b;border-color:#6d522b;color:#fff}.btn.success{background:#3f714b;border-color:#3f714b;color:#fff}.btn.ghost{background:transparent}.btn.danger{border-color:#d5a9a5;color:#974b45;background:#fff7f6}.btn:disabled{opacity:.4;cursor:not-allowed}.filelabel input{display:none}
+.top-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-left:auto}.topbar.is-publishing #publishBtn{min-width:132px}.topbar.is-publishing .connection{color:#7b5d28}.btn{border:1px solid #cdbb9f;border-radius:8px;background:#fffdf9;color:#625344;padding:8px 11px;box-shadow:0 1px 0 rgba(255,255,255,.8)}.btn:hover{border-color:#aa8750;background:#fffaf0}.btn.primary{background:#6d522b;border-color:#6d522b;color:#fff}.btn.success{background:#3f714b;border-color:#3f714b;color:#fff}.btn.ghost{background:transparent}.btn.danger{border-color:#d5a9a5;color:#974b45;background:#fff7f6}.btn:disabled{opacity:.4;cursor:not-allowed}.filelabel input{display:none}
 .workspace{display:grid;grid-template-columns:276px minmax(0,1fr);min-height:calc(100vh - var(--top))}
 /* Sidebar volutamente uguale al regolamento */
 .sidebar{position:sticky;top:var(--top);align-self:start;width:100%;height:calc(100vh - var(--top));overflow:auto;border:0;border-right:1px solid rgba(201,154,38,.34);background:radial-gradient(circle at 35% -5%,rgba(255,255,255,.04),transparent 33%),linear-gradient(180deg,rgba(31,26,23,.997),rgba(12,11,10,.997));box-shadow:inset -16px 0 34px rgba(0,0,0,.18)}
@@ -184,14 +184,14 @@ const DB_NAME='felix_staff_regolamento',STORE='drafts',DRAFT_KEY='main';
 const PREVIEW_KEY='ff_regolamento_staff_preview_v1',PREVIEW_CHANNEL='ff-regolamento-preview';
 const PUBLISHER_URL='https://editor.felixfelicisharrypottergdr.workers.dev/publish';
 const $=s=>document.querySelector(s);
-const connPill=$('#connPill'),status=$('#status'),reloadBtn=$('#reloadBtn'),publishBtn=$('#publishBtn'),previewBtn=$('#previewBtn'),sourceUrl=$('#sourceUrl');
+const topbar=document.querySelector('.topbar'),connPill=$('#connPill'),status=$('#status'),reloadBtn=$('#reloadBtn'),publishBtn=$('#publishBtn'),previewBtn=$('#previewBtn'),sourceUrl=$('#sourceUrl');
 const sidebarNav=$('#sidebarNav'),sidebarTitle=$('#sidebarTitle'),sidebarEyebrow=$('#sidebarEyebrow'),sidebarBack=$('#sidebarBack'),sidebarForward=$('#sidebarForward');
 const emptyState=$('#emptyState'),pageCard=$('#pageCard'),pageKicker=$('#pageKicker'),pageTitle=$('#pageTitle'),pageSubtitle=$('#pageSubtitle'),reader=$('#reader'),editBtn=$('#editBtn'),editorPanel=$('#editorPanel'),saveState=$('#saveState');
 const slugLabel=$('#slugLabel'),titleInput=$('#titleInput'),subtitleInput=$('#subtitleInput'),pathDisplay=$('#pathDisplay'),modeInput=$('#modeInput'),aliasInput=$('#aliasInput'),visualEditor=$('#visualEditor'),savePageBtn=$('#savePageBtn'),discardPageBtn=$('#discardPageBtn'),editHint=$('#editHint'),previewNote=$('#previewNote');
 const fontSelect=$('#fontSelect'),sizeSelect=$('#sizeSelect'),colorSelect=$('#colorSelect'),imgBtn=$('#imgBtn'),atBtn=$('#atBtn'),diceBtn=$('#diceBtn'),tagBtn=$('#tagBtn'),quoteBtn=$('#quoteBtn'),codeBtn=$('#codeBtn'),spoilerBtn=$('#spoilerBtn');
 const draftBox=$('#draftBox'),draftText=$('#draftText'),restoreDraftBtn=$('#restoreDraftBtn'),discardDraftBtn=$('#discardDraftBtn'),toast=$('#toast');
 const unsavedModal=$('#unsavedModal'),stayBtn=$('#stayBtn'),discardGoBtn=$('#discardGoBtn'),saveGoBtn=$('#saveGoBtn');
-let originalText='',sourceLabel='',baseHash='',pages=null,currentSlug=null,pageDirty=false,globalDirty=false,availableDraft=null,editing=false,pendingNavigation=null,previewPatches={};
+let originalText='',sourceLabel='',baseHash='',pages=null,currentSlug=null,pageDirty=false,globalDirty=false,availableDraft=null,editing=false,pendingNavigation=null,previewPatches={},publishing=false;
 let savedRange=null;
 const previewChannel=('BroadcastChannel' in window)?new BroadcastChannel(PREVIEW_CHANNEL):null;
 let sidebarLevel='root',sidebarForwardStack=[];
@@ -200,6 +200,20 @@ function cleanTitle(s){return String(s||'').replace(/^\s*(?:Nuova\s+)?\d+(?:\.\d
 function showToast(msg,ok=false){toast.textContent=msg;toast.className='toast show'+(ok?' ok':'');clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.className='toast',2300)}
 function setStatus(msg){status.textContent=msg}
 function setConn(type,text){connPill.className='pill '+(type||'');connPill.textContent='● '+text}
+function delay(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+async function waitForPublicVersion(expectedHash,timeoutMs=30000){
+  const started=Date.now();
+  while(Date.now()-started<timeoutMs){
+    try{
+      const u=new URL(REGULATION_URL);u.searchParams.set('_published',Date.now());
+      const r=await fetch(u.toString(),{cache:'no-store'});
+      if(r.ok){const text=await r.text();if(await hashText(text)===expectedHash)return {ok:true,text}}
+    }catch(_e){}
+    await delay(1500);
+  }
+  return {ok:false,text:null};
+}
+function setPublishingState(on,label='Pubblica'){publishing=on;publishBtn.disabled=on;publishBtn.textContent=label;topbar?.classList.toggle('is-publishing',on);reloadBtn.disabled=on}
 function setDirty(v=true){pageDirty=v;saveState.className='save-state '+(v?'dirty':'saved');saveState.innerHTML=v?'● Modifiche non salvate':'<span class="check">✓</span> Salvato';editHint.textContent=v?'Modifiche non ancora salvate':'Nessuna modifica';editHint.classList.toggle('dirty',v)}
 function applyTheme(slug){document.body.classList.remove('theme-arc','theme-erb','theme-med','theme-dif','theme-div','theme-men');let t='';if(['magizoologia','fiducia','domesticazione','bestiario-demo'].includes(slug))t='erb';else if(['manuale-incantesimi'].includes(slug))t='dif';if(t){const map={arc:['--arc','--arc-d','--arc-a','--arc-l','--arc-p','--arc-e'],erb:['--erb','--erb-d','--erb-a','--erb-l','--erb-p','--erb-e'],med:['--med','--med-d','--med-a','--med-l','--med-p','--med-e'],dif:['--dif','--dif-d','--dif-a','--dif-l','--dif-p','--dif-e'],div:['--div','--div-d','--div-a','--div-l','--div-p','--div-e'],men:['--men','--men-d','--men-a','--men-l','--men-p','--men-e']}[t];const vars=['--sap-c','--sap-d','--sap-a','--sap-l','--sap-p','--sap-e'];map.forEach((src,i)=>document.documentElement.style.setProperty(vars[i],`var(${src})`))}else{[['--sap-c','#5d4435'],['--sap-d','#211915'],['--sap-a','#8a684d'],['--sap-l','#c49a61'],['--sap-p','#f4e5cf'],['--sap-e','#b78d51']].forEach(([k,v])=>document.documentElement.style.setProperty(k,v))}}
 function parseRegulation(text){const fmt=text.match(/<!--\s*FELIX_EDITOR_FORMAT:(\d+)\s*-->/i);if(!fmt)throw new Error('La versione online non è predisposta per l’Editor Staff.');const a=text.indexOf(START),b=text.indexOf(END,a+START.length);if(a<0||b<0)throw new Error('Blocco dei contenuti non trovato.');const block=text.slice(a+START.length,b),m=block.match(/const\s+PAGES\s*=\s*([\s\S]*?)\s*;\s*$/);if(!m)throw new Error('Archivio PAGES non riconosciuto.');try{return{pages:JSON.parse(m[1]),format:Number(fmt[1])}}catch(e){throw new Error('I contenuti non sono leggibili: '+e.message)}}
@@ -228,22 +242,28 @@ function publisherErrorMessage(code,detail=''){
   return map[code]||(detail?`${code}: ${detail}`:`Errore di pubblicazione (${code||'sconosciuto'}).`);
 }
 async function publishViaWorker(){
+  if(publishing)return;
   if(!pages){showToast('Regolamento non ancora caricato');return}
-  if(pageDirty)commitCurrent();
 
-  let updated;
-  try{updated=buildUpdatedHtml()}catch(e){showToast(e.message);return}
-  const updatedHash=await hashText(updated);
-  if(updatedHash===baseHash){
-    showToast('Nessuna modifica da pubblicare',true);
-    setStatus('Il regolamento pubblicato è già allineato con la bozza.');
-    return;
-  }
-
-  globalDirty=true;
-  publishBtn.disabled=true;
-  setStatus('Verifica della sessione Staff e pubblicazione…');
+  setPublishingState(true,pageDirty?'Salvataggio…':'Pubblicazione…');
   try{
+    if(pageDirty){
+      setStatus('Salvataggio delle modifiche della pagina…');
+      await commitCurrent({quiet:true,statusMessage:false});
+    }
+
+    let updated;
+    try{updated=buildUpdatedHtml()}catch(e){showToast(e.message);return}
+    const updatedHash=await hashText(updated);
+    if(updatedHash===baseHash){
+      showToast('Nessuna modifica da pubblicare',true);
+      setStatus('Il regolamento pubblicato è già allineato con la bozza.');
+      return;
+    }
+
+    globalDirty=true;
+    setPublishingState(true,'Pubblicazione…');
+    setStatus('Pubblicazione su GitHub…');
     const idToken=await getStaffIdToken();
     const resp=await fetch(PUBLISHER_URL,{
       method:'POST',
@@ -263,10 +283,20 @@ async function publishViaWorker(){
     baseHash=updatedHash;
     sourceLabel='GitHub · main';
     globalDirty=false;
-    await idbDelete();availableDraft=null;draftBox.classList.remove('show');
     const shortSha=result.commitSha?String(result.commitSha).slice(0,7):'';
-    setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''}. GitHub Pages si aggiornerà a breve.`);
-    showToast('✓ Pubblicato sul regolamento',true);
+    setPublishingState(true,'Aggiornamento…');
+    setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''} · attendo l’aggiornamento del regolamento pubblico…`);
+
+    const publicCheck=await waitForPublicVersion(updatedHash,30000);
+    await idbDelete();availableDraft=null;draftBox.classList.remove('show');
+    if(publicCheck.ok){
+      originalText=publicCheck.text||updated;
+      setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''} · regolamento pubblico aggiornato.`);
+      showToast('✓ Regolamento aggiornato',true);
+    }else{
+      setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''} · GitHub Pages sta ancora aggiornando il regolamento.`);
+      showToast('✓ Pubblicato · aggiornamento del sito in corso',true);
+    }
   }catch(e){
     console.error('Pubblicazione tramite servizio:',e);
     const code=e&&e.code?e.code:(e&&e.message?e.message:'UNKNOWN');
@@ -274,7 +304,7 @@ async function publishViaWorker(){
     setStatus(msg);
     showToast(code==='REMOTE_CHANGED'?'Versione online cambiata: pubblicazione bloccata':'Pubblicazione non riuscita');
   }finally{
-    publishBtn.disabled=false;
+    setPublishingState(false,'Pubblica');
   }
 }
 
@@ -329,7 +359,7 @@ function populateForm(){const p=pages[currentSlug];titleInput.value=p.title||'';
 function renderPage(){const p=pages[currentSlug];if(!p)return;applyTheme(currentSlug);pageKicker.textContent=(p.crumb&&p.crumb.length?p.crumb.slice(0,-1).join(' › '):'Regolamento')||'Regolamento';pageTitle.textContent=cleanTitle(p.title||currentSlug);pageSubtitle.textContent=p.subtitle||'';reader.innerHTML=p.html||'';hideLegacyEmbeddedIndex(reader);reader.style.display=editing?'none':'block';editorPanel.classList.toggle('show',editing);editBtn.textContent=editing?'Chiudi modifica':'Modifica';setDirty(false);renderSidebar()}
 function startEdit(){if(!currentSlug)return;if(!editing){editing=true;populateForm();reader.style.display='none';editorPanel.classList.add('show');editBtn.textContent='Chiudi modifica';setDirty(false);renderSidebar();visualEditor.focus()}else{if(pageDirty){requestNavigation(()=>{editing=false;renderPage()})}else{editing=false;renderPage()}}}
 function syncPreview(){if(!pages||!currentSlug)return;previewPatches[currentSlug]=structuredClone(pages[currentSlug]);try{localStorage.setItem(PREVIEW_KEY,JSON.stringify({savedAt:Date.now(),patches:previewPatches,currentSlug}));previewChannel?.postMessage({type:'preview-update',slug:currentSlug});previewNote.classList.add('show')}catch(e){console.warn('Anteprima collegata non disponibile',e)}}
-function commitCurrent(){if(!pages||!currentSlug)return;const p=pages[currentSlug];p.title=titleInput.value.trim();p.subtitle=subtitleInput.value.trim();p.mode=modeInput.value;p.aliases=aliasInput.value.split(/\n+/).map(x=>x.trim()).filter(Boolean);p.html=currentFormHtml();globalDirty=true;setDirty(false);syncPreview();renderPage();persistDraft(true);showToast('✓ Salvato · anteprima aggiornata',true);setStatus('Salvato in bozza. La modalità Anteprima Staff del regolamento è stata aggiornata.')}
+async function commitCurrent({quiet=false,statusMessage=true}={}){if(!pages||!currentSlug)return false;const p=pages[currentSlug];p.title=titleInput.value.trim();p.subtitle=subtitleInput.value.trim();p.mode=modeInput.value;p.aliases=aliasInput.value.split(/\n+/).map(x=>x.trim()).filter(Boolean);p.html=currentFormHtml();globalDirty=true;setDirty(false);syncPreview();renderPage();try{await persistDraft(true)}catch(e){console.warn('Salvataggio bozza locale:',e)}if(!quiet)showToast('✓ Salvato · anteprima aggiornata',true);if(statusMessage)setStatus('Salvato in bozza. Premi Pubblica per aggiornare il regolamento online.');return true}
 function discardCurrent(){if(!currentSlug)return;populateForm();setDirty(false);showToast('Modifiche scartate')}
 function loadPage(slug){if(!pages||!pages[slug])return;currentSlug=slug;editing=false;applyTheme(slug);const focus=sidebarGroupFor(slug);if(focus&&SIDEBAR_LEVELS[focus])sidebarLevel=focus;else sidebarLevel='root';sidebarForwardStack=[];pageCard.classList.add('ready');emptyState.style.display='none';renderPage();window.scrollTo({top:0,behavior:'smooth'})}
 function navigateTo(slug){if(slug===currentSlug)return;requestNavigation(()=>loadPage(slug))}
@@ -395,8 +425,10 @@ spoilerBtn.addEventListener('click',e=>{e.preventDefault();restoreSelection();le
 fontSelect.addEventListener('change',()=>{if(fontSelect.value)exec('fontName',fontSelect.value);fontSelect.value=''});
 sizeSelect.addEventListener('change',()=>{if(sizeSelect.value)exec('fontSize',sizeSelect.value);sizeSelect.value=''});
 colorSelect.addEventListener('change',()=>{if(colorSelect.value)exec('foreColor',colorSelect.value);colorSelect.value=''});
-savePageBtn.addEventListener('click',commitCurrent);discardPageBtn.addEventListener('click',()=>{if(!pageDirty||confirm('Scartare le modifiche non salvate di questa pagina?'))discardCurrent()});
-stayBtn.addEventListener('click',closeUnsaved);discardGoBtn.addEventListener('click',()=>{discardCurrent();const go=pendingNavigation;unsavedModal.classList.remove('show');pendingNavigation=null;go?.()});saveGoBtn.addEventListener('click',()=>{commitCurrent();const go=pendingNavigation;unsavedModal.classList.remove('show');pendingNavigation=null;go?.()});unsavedModal.addEventListener('click',e=>{if(e.target===unsavedModal)closeUnsaved()});
+savePageBtn.addEventListener('click',()=>commitCurrent());discardPageBtn.addEventListener('click',()=>{if(!pageDirty||confirm('Scartare le modifiche non salvate di questa pagina?'))discardCurrent()});
+stayBtn.addEventListener('click',closeUnsaved);discardGoBtn.addEventListener('click',()=>{discardCurrent();const go=pendingNavigation;unsavedModal.classList.remove('show');pendingNavigation=null;go?.()});saveGoBtn.addEventListener('click',async()=>{await commitCurrent();const go=pendingNavigation;unsavedModal.classList.remove('show');pendingNavigation=null;go?.()});unsavedModal.addEventListener('click',e=>{if(e.target===unsavedModal)closeUnsaved()});
+window.addEventListener('beforeunload',e=>{if(pageDirty||publishing){e.preventDefault();e.returnValue=''}});
+
 reloadBtn.addEventListener('click',()=>requestNavigation(()=>{if(globalDirty&&!confirm('Aggiornare dal sito? Le modifiche salvate ma non ancora pubblicate resteranno nella bozza locale, ma la vista tornerà alla versione online.'))return;loadOnline()}));restoreDraftBtn.addEventListener('click',restoreDraft);discardDraftBtn.addEventListener('click',discardDraft);
 function openConnectedPreview(){if(pageDirty){requestNavigation(openConnectedPreview);return}if(currentSlug&&!previewPatches[currentSlug])syncPreview();const u=new URL(REGULATION_URL);u.searchParams.set('staffpreview','1');u.hash='#/'+(currentSlug||'home');window.open(u.toString(),'felix-regolamento-preview');showToast('Anteprima collegata aperta',true)}
 previewBtn.addEventListener('click',openConnectedPreview);
