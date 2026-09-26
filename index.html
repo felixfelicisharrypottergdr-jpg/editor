@@ -4,11 +4,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Editor Staff · Felix Felicis GdR</title>
+<title>Editor Staff v4 · Felix Felicis GdR</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Labrada:wght@400;500;700&display=swap');
 @font-face{font-family:'Federo';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/federo/v17/iJWFBX-cbD_ETsbWilmf.woff2') format('woff2')}
 @font-face{font-family:'magic';src:url('https://dl.dropboxusercontent.com/scl/fi/ujsk7bv1rfyjzcnb7xr6n/HarryBeastDisplay-Regular.woff2?rlkey=4vnd1b59f7l05qgt4poxtk1df&st=bq9qi84i&dl=0') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Antic Slab';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/anticslab/v15/bWt97fPFfRzkCa9Jlp6IacVcXA.woff2') format('woff2')}
+@font-face{font-family:'MedievalSharp';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/medievalsharp/v24/EvOJzAlL3oU5AQl2mP5KdgptMqhwMg.woff2') format('woff2')}
+@font-face{font-family:'Fondamento';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/fondamento/v16/4UaHrEJGsxNmFTPDnkaJ96rp5w.woff2') format('woff2')}
+@font-face{font-family:'Nova Cut';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/novacut/v24/KFOkCnSYu8mL-39LkVxIIzIXKMny.woff2') format('woff2')}
+@font-face{font-family:'Allison';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/allison/v11/X7nl4b88AP2nkbvZCCGa4ebjEgg.woff2') format('woff2')}
+@font-face{font-family:'Passions Conflict';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/passionsconflict/v5/kmKnZrcrFhfafnWX9x0GuEC-zowow6NZaxM.woff2') format('woff2')}
+@font-face{font-family:'Mrs Saint Delafield';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/mrssaintdelafield/v13/v6-IGZDIOVXH9xtmTZfRagunqBw5WC62QKknLw.woff2') format('woff2')}
+@font-face{font-family:'IM Fell English';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/imfellenglish/v14/Ktk1ALSLW8zDe0rthJysWrnLsAzHEKOYd4xI5g.woff2') format('woff2')}
+
 :root{
   --paper:#f6f0e6;--paper2:#fffdf9;--ink:#342b24;--muted:#7b6f64;--line:#ddd0bd;
   --gold:#b78938;--gold2:#d6a84b;--gold-soft:#f4e8cf;--green:#3d7b4c;--green-soft:#e9f5eb;
@@ -26,7 +35,7 @@
 .topbar{position:sticky;top:0;z-index:60;min-height:var(--top);display:flex;align-items:center;gap:10px;padding:10px 18px;background:rgba(255,252,247,.97);border-bottom:1px solid #d7c6ad;box-shadow:0 5px 20px rgba(70,52,33,.08);backdrop-filter:blur(8px)}
 .brand{min-width:260px}.brand b{display:block;font-family:'magic','Federo',serif;font-size:1.75rem;font-weight:400;color:#5d4435;line-height:1}.brand small{display:block;margin-top:4px;color:#8d7e6d;font-size:.76rem}
 .connection{display:flex;align-items:center;gap:7px;min-width:0;flex:1;color:#766a5e;font-size:.79rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border:1px solid #d8c9b5;border-radius:999px;background:#fff;color:#786957;font-size:.7rem}.pill.ok{border-color:#b9d0bd;background:#f3faf4;color:#397047}.pill.warn{border-color:#e4c89a;background:#fff9ec;color:#8a6527}
-.top-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.btn{border:1px solid #cdbb9f;border-radius:8px;background:#fffdf9;color:#625344;padding:8px 11px;box-shadow:0 1px 0 rgba(255,255,255,.8)}.btn:hover{border-color:#aa8750;background:#fffaf0}.btn.primary{background:#6d522b;border-color:#6d522b;color:#fff}.btn.success{background:#3f714b;border-color:#3f714b;color:#fff}.btn.ghost{background:transparent}.btn.danger{border-color:#d5a9a5;color:#974b45;background:#fff7f6}.btn:disabled{opacity:.4;cursor:not-allowed}.filelabel input{display:none}
+.top-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-left:auto}.btn{border:1px solid #cdbb9f;border-radius:8px;background:#fffdf9;color:#625344;padding:8px 11px;box-shadow:0 1px 0 rgba(255,255,255,.8)}.btn:hover{border-color:#aa8750;background:#fffaf0}.btn.primary{background:#6d522b;border-color:#6d522b;color:#fff}.btn.success{background:#3f714b;border-color:#3f714b;color:#fff}.btn.ghost{background:transparent}.btn.danger{border-color:#d5a9a5;color:#974b45;background:#fff7f6}.btn:disabled{opacity:.4;cursor:not-allowed}.filelabel input{display:none}
 .workspace{display:grid;grid-template-columns:276px minmax(0,1fr);min-height:calc(100vh - var(--top))}
 /* Sidebar volutamente uguale al regolamento */
 .sidebar{position:sticky;top:var(--top);align-self:start;width:100%;height:calc(100vh - var(--top));overflow:auto;border:0;border-right:1px solid rgba(201,154,38,.34);background:radial-gradient(circle at 35% -5%,rgba(255,255,255,.04),transparent 33%),linear-gradient(180deg,rgba(31,26,23,.997),rgba(12,11,10,.997));box-shadow:inset -16px 0 34px rgba(0,0,0,.18)}
@@ -38,6 +47,14 @@
 .editor-panel{display:none;border-top:1px solid #ded0bd;background:#fbf8f2}.editor-panel.show{display:block}.editor-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:#f1e8db;border-bottom:1px solid #decdb6}.editor-top strong{color:#69563f}.editor-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px 16px;border-bottom:1px solid #e1d4c2}.field.full{grid-column:1/-1}.field label{display:block;margin:0 0 5px;color:#7e6d5a;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}.field input,.field textarea,.field select{width:100%;border:1px solid #cfbea8;border-radius:7px;background:#fff;color:#3f342b;padding:9px 10px;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:#a77d3d;box-shadow:0 0 0 3px rgba(183,137,56,.09)}.field textarea{min-height:70px;resize:vertical}.help{margin-top:5px;color:#9a8b7b;font-size:.68rem}.toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:9px 16px;background:#f7f0e6;border-bottom:1px solid #e0d2c0}.toolbar button{border:1px solid #cfbea8;border-radius:6px;background:#fff;color:#625141;padding:6px 9px}.toolbar button:hover{border-color:#a77d3d;background:#fff9ee}.visual-editor{min-height:430px;max-height:64vh;overflow:auto;background:#fff;color:#3b3028;padding:28px 34px;outline:none;font-family:'Labrada',Georgia,serif;line-height:1.72;text-align:justify;hyphens:auto}.visual-editor:focus{box-shadow:inset 0 0 0 2px rgba(183,137,56,.18)}.visual-editor h1,.visual-editor h2,.visual-editor h3,.visual-editor h4{font-family:'magic','Federo',serif;color:var(--sap-c);text-align:left}.visual-editor h2{border-bottom:1px solid var(--sap-e)}.edit-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid #dfd1bf;background:#f7f0e7}.edit-actions .spacer{flex:1}.edit-hint{font-size:.72rem;color:#887a69}.edit-hint.dirty{color:#9a6b24;font-weight:700}.empty{max-width:760px;margin:10vh auto;padding:30px;border:1px dashed #cfb98e;border-radius:12px;background:#fffaf1;text-align:center;color:#7c6e5d}.empty h1{font-family:'magic','Federo',serif;color:#6b5130;font-weight:400;font-size:2.2rem}
 .toast{position:fixed;right:18px;bottom:18px;z-index:120;background:#fff;border:1px solid #c8b597;color:#5f5141;padding:11px 15px;border-radius:10px;box-shadow:0 14px 36px rgba(62,44,24,.18);opacity:0;transform:translateY(8px);pointer-events:none;transition:.18s}.toast.show{opacity:1;transform:none}.toast.ok{border-color:#a8c9ae;background:#f3fbf4;color:#356d42}
 .modal-backdrop{display:none;position:fixed;inset:0;z-index:200;background:rgba(31,24,18,.46);place-items:center;padding:18px}.modal-backdrop.show{display:grid}.modal{width:min(520px,100%);background:#fffdf9;border:1px solid #d8c6ad;border-radius:14px;box-shadow:0 22px 65px rgba(30,21,13,.28);overflow:hidden}.modal h2{margin:0;padding:18px 20px 8px;font-family:'magic','Federo',serif;font-size:1.8rem;font-weight:400;color:#624c30}.modal p{margin:0;padding:0 20px 18px;color:#786a5b;line-height:1.5}.modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;padding:13px 16px;background:#f6efe5;border-top:1px solid #e0d3c1}
+
+.auto-path{min-height:42px;display:flex;align-items:center;padding:9px 11px;border:1px solid #d9c9b3;border-radius:8px;background:#f0ebe3;color:#6c5d4d;font-size:.94rem;box-shadow:inset 0 1px 2px rgba(79,58,34,.04)}
+.auto-path .sep{color:#b49b77;padding:0 .34rem}.auto-path-lock{display:inline-flex;align-items:center;gap:5px;margin-top:5px;color:#9a8b7b;font-size:.68rem}
+.toolbar{position:sticky;top:var(--top);z-index:15;display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:9px 12px;background:#f7f0e6;border-bottom:1px solid #e0d2c0;box-shadow:0 4px 12px rgba(75,55,30,.06)}
+.toolbar .tool-sep{width:1px;height:28px;background:#d7c7b1;margin:0 2px}.toolbar button,.toolbar select{height:31px;border:1px solid #cfbea8;border-radius:6px;background:#fff;color:#625141;padding:4px 8px}.toolbar button{min-width:31px;font-weight:600}.toolbar button:hover,.toolbar select:hover{border-color:#a77d3d;background:#fff9ee}.toolbar select{max-width:165px;cursor:pointer}.toolbar .wide{min-width:auto;padding-inline:10px}.toolbar .danger-lite{color:#8d4f45}.toolbar button:active{transform:translateY(1px)}
+.visual-editor blockquote{border-left:4px solid var(--sap-l);background:color-mix(in srgb,var(--sap-p) 20%,transparent);padding:.7rem 1rem;margin:1rem 0}.visual-editor pre{white-space:pre-wrap;background:#f1ede6;border:1px solid #d9cdbd;border-radius:8px;padding:10px;font-family:Courier,monospace}.visual-editor details{border:1px solid #dac9ae;border-radius:8px;background:#fffaf2;padding:8px 10px;margin:10px 0}.visual-editor summary{cursor:pointer;font-weight:700;color:var(--sap-a)}.visual-editor .dice-ref{display:inline-block;padding:.05rem .35rem;border:1px solid currentColor;border-radius:999px;font-family:'Federo',serif;font-size:.9em}.visual-editor .tag-ref{font-weight:700;color:var(--sap-a)}
+.preview-note{display:none;align-items:center;gap:7px;padding:7px 10px;border:1px solid #d4b26d;border-radius:8px;background:#fff8e8;color:#7a5c24;font-size:.72rem}.preview-note.show{display:flex}.preview-note b{color:#5f471c}
+
 @media(max-width:980px){:root{--top:118px}.topbar{flex-wrap:wrap}.brand{min-width:0}.connection{order:3;flex-basis:100%}.workspace{display:block}.sidebar{position:relative;top:auto;height:auto;max-height:390px}.main{padding:12px}.editor-fields{grid-template-columns:1fr}.field.full{grid-column:auto}.page-header{align-items:flex-start;flex-direction:column}.reader,.visual-editor{padding:22px 20px}}
 </style>
 </head>
@@ -46,11 +63,8 @@
   <div class="brand"><b>Editor Staff · Felix Felicis</b><small>Modifica il regolamento senza entrare nel codice</small></div>
   <div class="connection"><span class="pill" id="connPill">● Connessione</span><span id="status">Connessione al regolamento…</span></div>
   <div class="top-actions">
-    <button class="btn" id="reloadBtn">↻ Ricarica online</button>
-    <label class="btn filelabel">Apri file locale<input id="fileInput" type="file" accept=".html,text/html"></label>
-    <button class="btn" id="draftBtn" disabled>Salva bozza</button>
-    <button class="btn primary" id="exportBtn" disabled>Esporta index.html</button>
-    <button class="btn success" id="publishBtn">Pubblica</button>
+    <button class="btn" id="previewBtn" title="Apri il regolamento in modalità anteprima Staff">Vedi nel regolamento ↗</button>
+    <button class="btn success" id="publishBtn" title="Pubblica le modifiche nel regolamento online">Pubblica</button>
   </div>
 </header>
 <div class="workspace">
@@ -68,7 +82,7 @@
   </aside>
   <main class="main">
     <div class="main-shell">
-      <div class="utility-row"><span class="pill ok">Regolamento collegato</span><div class="sourceurl" id="sourceUrl"></div><a class="btn" href="https://felixfelicisharrypottergdr-jpg.github.io/regolamento/" target="_blank" rel="noopener">Apri sito ↗</a></div>
+      <div class="utility-row"><span class="pill ok">Regolamento collegato</span><div class="sourceurl" id="sourceUrl"></div><button class="btn ghost" id="reloadBtn" title="Ricarica l'ultima versione pubblicata del regolamento">↻ Aggiorna</button><a class="btn" href="https://felixfelicisharrypottergdr-jpg.github.io/regolamento/" target="_blank" rel="noopener">Regolamento pubblico ↗</a></div>
       <div class="draftbox" id="draftBox"><span id="draftText">È disponibile una bozza locale.</span><button class="btn" id="restoreDraftBtn">Ripristina bozza</button><button class="btn danger" id="discardDraftBtn">Scarta</button></div>
       <section class="empty" id="emptyState"><h1>Collegamento automatico</h1><p>L'editor sta caricando il regolamento pubblicato su GitHub Pages.</p></section>
       <section class="page-card" id="pageCard">
@@ -82,15 +96,44 @@
           <div class="editor-fields">
             <div class="field"><label>Titolo</label><input id="titleInput"></div>
             <div class="field"><label>Sottotitolo</label><input id="subtitleInput"></div>
-            <div class="field"><label>Percorso</label><input id="crumbInput"><div class="help">Separa i livelli con &gt;</div></div>
+            <div class="field"><label>Percorso</label><div class="auto-path" id="pathDisplay"></div><div class="auto-path-lock">🔒 Determinato automaticamente dalla posizione nella sidebar</div></div>
             <div class="field"><label>Aspetto pagina</label><select id="modeInput"><option value="paper">Chiaro</option><option value="dark">Scuro</option></select></div>
             <div class="field full"><label>Parole alternative per la ricerca</label><textarea id="aliasInput"></textarea></div>
           </div>
-          <div class="toolbar" id="toolbar">
-            <button data-cmd="bold"><b>Grassetto</b></button><button data-cmd="italic"><i>Corsivo</i></button><button data-block="h2">Titolo sezione</button><button data-block="h3">Sottotitolo</button><button data-block="p">Paragrafo</button><button id="linkBtn">Collegamento</button><button data-cmd="insertUnorderedList">Elenco</button>
+          <div class="toolbar" id="toolbar" aria-label="Strumenti di formattazione">
+            <button data-cmd="bold" title="Grassetto"><b>B</b></button>
+            <button data-cmd="italic" title="Corsivo"><i>I</i></button>
+            <button data-cmd="underline" title="Sottolineato"><u>U</u></button>
+            <button data-cmd="strikeThrough" title="Barrato"><s>S</s></button>
+            <button data-cmd="superscript" title="Apice">x²</button>
+            <button data-cmd="subscript" title="Pedice">x₂</button>
+            <span class="tool-sep"></span>
+            <button data-cmd="insertUnorderedList" title="Elenco puntato">≡</button>
+            <button data-cmd="insertOrderedList" title="Elenco numerato">1.</button>
+            <button data-cmd="justifyLeft" title="Allinea a sinistra">⇤</button>
+            <button data-cmd="justifyCenter" title="Centra">≡</button>
+            <button data-cmd="justifyRight" title="Allinea a destra">⇥</button>
+            <button data-cmd="justifyFull" title="Giustifica">☰</button>
+            <span class="tool-sep"></span>
+            <button id="atBtn" title="Inserisci @">@</button>
+            <button id="linkBtn" class="wide" title="Inserisci collegamento">URL</button>
+            <button id="imgBtn" class="wide" title="Inserisci immagine">IMG</button>
+            <button data-cmd="removeFormat" class="danger-lite" title="Rimuovi formattazione">⌫</button>
+            <button id="diceBtn" class="wide" title="Inserisci riferimento a un dado">⚄ Dado</button>
+            <button id="tagBtn" class="wide" title="Inserisci tag">@Tag</button>
+            <span class="tool-sep"></span>
+            <select id="fontSelect" title="Font">
+              <option value="">Font</option><option>Arial</option><option>Times New Roman</option><option>Courier New</option><option>Impact</option><option>Geneva</option><option>Optima</option>
+              <option value="magic">Magic</option><option value="MedievalSharp">MedievalSharp</option><option value="Fondamento">Fondamento</option><option value="Labrada">Labrada</option><option value="Federo">Federo</option><option value="Antic Slab">Antic Slab</option><option value="IM Fell English">IM Fell English</option><option value="Nova Cut">Nova Cut</option><option value="Allison">Allison</option><option value="Passions Conflict">Passions Conflict</option><option value="Mrs Saint Delafield">Mrs Saint Delafield</option>
+            </select>
+            <select id="sizeSelect" title="Dimensione"><option value="">Dimensione</option><option value="2">Piccolo</option><option value="3">Medio</option><option value="5">Grande</option></select>
+            <select id="colorSelect" title="Colore"><option value="">Colore</option><option value="#1f4fa3">Blu</option><option value="#b4212d">Rosso</option><option value="#7a368d">Viola</option><option value="#d97706">Arancio</option><option value="#c59a00">Giallo</option><option value="#777777">Grigio</option><option value="#24733b">Verde</option><option value="#222222">Nero</option><option value="#8a5a2b">Marrone</option></select>
+            <span class="tool-sep"></span>
+            <button data-block="h2" class="wide">Titolo</button><button data-block="h3" class="wide">Sottotitolo</button><button data-block="p" class="wide">Paragrafo</button>
+            <button id="quoteBtn" class="wide">QUOTE</button><button id="codeBtn" class="wide">CODE</button><button id="spoilerBtn" class="wide">SPOILER</button>
           </div>
           <div class="visual-editor" id="visualEditor" contenteditable="true" spellcheck="true"></div>
-          <div class="edit-actions"><button class="btn success" id="savePageBtn">✓ Salva</button><button class="btn danger" id="discardPageBtn">Scarta modifiche</button><span class="spacer"></span><span class="edit-hint" id="editHint">Nessuna modifica</span></div>
+          <div class="edit-actions"><button class="btn success" id="savePageBtn">✓ Salva</button><button class="btn danger" id="discardPageBtn">Scarta modifiche</button><span class="spacer"></span><span class="edit-hint" id="editHint">Nessuna modifica</span><span class="preview-note" id="previewNote"><b>Anteprima collegata:</b> il regolamento Staff si aggiorna dopo ogni Salva.</span></div>
         </section>
       </section>
     </div>
@@ -106,14 +149,18 @@
 const REGULATION_URL='https://felixfelicisharrypottergdr-jpg.github.io/regolamento/';
 const START='/* FELIX_CONTENT_START */',END='/* FELIX_CONTENT_END */';
 const DB_NAME='felix_staff_regolamento',STORE='drafts',DRAFT_KEY='main';
+const PREVIEW_KEY='ff_regolamento_staff_preview_v1',PREVIEW_CHANNEL='ff-regolamento-preview';
 const $=s=>document.querySelector(s);
-const connPill=$('#connPill'),status=$('#status'),reloadBtn=$('#reloadBtn'),fileInput=$('#fileInput'),draftBtn=$('#draftBtn'),exportBtn=$('#exportBtn'),publishBtn=$('#publishBtn'),sourceUrl=$('#sourceUrl');
+const connPill=$('#connPill'),status=$('#status'),reloadBtn=$('#reloadBtn'),publishBtn=$('#publishBtn'),previewBtn=$('#previewBtn'),sourceUrl=$('#sourceUrl');
 const sidebarNav=$('#sidebarNav'),sidebarTitle=$('#sidebarTitle'),sidebarEyebrow=$('#sidebarEyebrow'),sidebarBack=$('#sidebarBack'),sidebarForward=$('#sidebarForward');
 const emptyState=$('#emptyState'),pageCard=$('#pageCard'),pageKicker=$('#pageKicker'),pageTitle=$('#pageTitle'),pageSubtitle=$('#pageSubtitle'),reader=$('#reader'),editBtn=$('#editBtn'),editorPanel=$('#editorPanel'),saveState=$('#saveState');
-const slugLabel=$('#slugLabel'),titleInput=$('#titleInput'),subtitleInput=$('#subtitleInput'),crumbInput=$('#crumbInput'),modeInput=$('#modeInput'),aliasInput=$('#aliasInput'),visualEditor=$('#visualEditor'),savePageBtn=$('#savePageBtn'),discardPageBtn=$('#discardPageBtn'),editHint=$('#editHint');
+const slugLabel=$('#slugLabel'),titleInput=$('#titleInput'),subtitleInput=$('#subtitleInput'),pathDisplay=$('#pathDisplay'),modeInput=$('#modeInput'),aliasInput=$('#aliasInput'),visualEditor=$('#visualEditor'),savePageBtn=$('#savePageBtn'),discardPageBtn=$('#discardPageBtn'),editHint=$('#editHint'),previewNote=$('#previewNote');
+const fontSelect=$('#fontSelect'),sizeSelect=$('#sizeSelect'),colorSelect=$('#colorSelect'),imgBtn=$('#imgBtn'),atBtn=$('#atBtn'),diceBtn=$('#diceBtn'),tagBtn=$('#tagBtn'),quoteBtn=$('#quoteBtn'),codeBtn=$('#codeBtn'),spoilerBtn=$('#spoilerBtn');
 const draftBox=$('#draftBox'),draftText=$('#draftText'),restoreDraftBtn=$('#restoreDraftBtn'),discardDraftBtn=$('#discardDraftBtn'),toast=$('#toast');
 const unsavedModal=$('#unsavedModal'),stayBtn=$('#stayBtn'),discardGoBtn=$('#discardGoBtn'),saveGoBtn=$('#saveGoBtn');
-let originalText='',sourceLabel='',baseHash='',pages=null,currentSlug=null,pageDirty=false,globalDirty=false,availableDraft=null,editing=false,pendingNavigation=null;
+let originalText='',sourceLabel='',baseHash='',pages=null,currentSlug=null,pageDirty=false,globalDirty=false,availableDraft=null,editing=false,pendingNavigation=null,previewPatches={};
+let savedRange=null;
+const previewChannel=('BroadcastChannel' in window)?new BroadcastChannel(PREVIEW_CHANNEL):null;
 let sidebarLevel='root',sidebarForwardStack=[];
 function escapeHtml(s){return String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function cleanTitle(s){return String(s||'').replace(/^\s*(?:Nuova\s+)?\d+(?:\.\d+)?\.\s*/,'')}
@@ -143,10 +190,12 @@ function zoomOut(){const level=SIDEBAR_LEVELS[sidebarLevel];if(!level?.parent)re
 function zoomIn(){if(!sidebarForwardStack.length)return;const n=sidebarForwardStack.pop();if(SIDEBAR_LEVELS[n]){sidebarLevel=n;renderSidebar()}}
 function enterLevel(levelKey){if(!SIDEBAR_LEVELS[levelKey])return;sidebarForwardStack=[];sidebarLevel=levelKey;renderSidebar()}
 function currentFormHtml(){return visualEditor.innerHTML}
-function populateForm(){const p=pages[currentSlug];titleInput.value=p.title||'';subtitleInput.value=p.subtitle||'';crumbInput.value=(p.crumb||[]).join(' > ');modeInput.value=p.mode==='dark'?'dark':'paper';aliasInput.value=(p.aliases||[]).join('\n');visualEditor.innerHTML=p.html||'';slugLabel.textContent=currentSlug}
+function renderAutoPath(p){const parts=(p.crumb||[]);pathDisplay.innerHTML=parts.map((x,i)=>`${i?'<span class=\"sep\">›</span>':''}<span>${escapeHtml(x)}</span>`).join('')}
+function populateForm(){const p=pages[currentSlug];titleInput.value=p.title||'';subtitleInput.value=p.subtitle||'';renderAutoPath(p);modeInput.value=p.mode==='dark'?'dark':'paper';aliasInput.value=(p.aliases||[]).join('\n');visualEditor.innerHTML=p.html||'';slugLabel.textContent=currentSlug}
 function renderPage(){const p=pages[currentSlug];if(!p)return;applyTheme(currentSlug);pageKicker.textContent=(p.crumb&&p.crumb.length?p.crumb.slice(0,-1).join(' › '):'Regolamento')||'Regolamento';pageTitle.textContent=cleanTitle(p.title||currentSlug);pageSubtitle.textContent=p.subtitle||'';reader.innerHTML=p.html||'';reader.style.display=editing?'none':'block';editorPanel.classList.toggle('show',editing);editBtn.textContent=editing?'Chiudi modifica':'Modifica';setDirty(false);renderSidebar()}
 function startEdit(){if(!currentSlug)return;if(!editing){editing=true;populateForm();reader.style.display='none';editorPanel.classList.add('show');editBtn.textContent='Chiudi modifica';setDirty(false);renderSidebar();visualEditor.focus()}else{if(pageDirty){requestNavigation(()=>{editing=false;renderPage()})}else{editing=false;renderPage()}}}
-function commitCurrent(){if(!pages||!currentSlug)return;const p=pages[currentSlug];p.title=titleInput.value.trim();p.subtitle=subtitleInput.value.trim();p.crumb=crumbInput.value.split('>').map(x=>x.trim()).filter(Boolean);p.mode=modeInput.value;p.aliases=aliasInput.value.split(/\n+/).map(x=>x.trim()).filter(Boolean);p.html=currentFormHtml();globalDirty=true;setDirty(false);renderPage();showToast('✓ Pagina salvata',true);setStatus('Modifiche salvate nell’editor. Salva una bozza, esporta o pubblica quando hai finito.')}
+function syncPreview(){if(!pages||!currentSlug)return;previewPatches[currentSlug]=structuredClone(pages[currentSlug]);try{localStorage.setItem(PREVIEW_KEY,JSON.stringify({savedAt:Date.now(),patches:previewPatches,currentSlug}));previewChannel?.postMessage({type:'preview-update',slug:currentSlug});previewNote.classList.add('show')}catch(e){console.warn('Anteprima collegata non disponibile',e)}}
+function commitCurrent(){if(!pages||!currentSlug)return;const p=pages[currentSlug];p.title=titleInput.value.trim();p.subtitle=subtitleInput.value.trim();p.mode=modeInput.value;p.aliases=aliasInput.value.split(/\n+/).map(x=>x.trim()).filter(Boolean);p.html=currentFormHtml();globalDirty=true;setDirty(false);syncPreview();renderPage();persistDraft(true);showToast('✓ Salvato · anteprima aggiornata',true);setStatus('Salvato in bozza. La modalità Anteprima Staff del regolamento è stata aggiornata.')}
 function discardCurrent(){if(!currentSlug)return;populateForm();setDirty(false);showToast('Modifiche scartate')}
 function loadPage(slug){if(!pages||!pages[slug])return;currentSlug=slug;editing=false;applyTheme(slug);const focus=sidebarGroupFor(slug);if(focus&&SIDEBAR_LEVELS[focus])sidebarLevel=focus;else sidebarLevel='root';sidebarForwardStack=[];pageCard.classList.add('ready');emptyState.style.display='none';renderPage();window.scrollTo({top:0,behavior:'smooth'})}
 function navigateTo(slug){if(slug===currentSlug)return;requestNavigation(()=>loadPage(slug))}
@@ -159,20 +208,40 @@ function openDb(){return new Promise((resolve,reject)=>{const r=indexedDB.open(D
 async function idbGet(){try{const db=await openDb();return await new Promise((res,rej)=>{const tx=db.transaction(STORE,'readonly'),r=tx.objectStore(STORE).get(DRAFT_KEY);r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)})}catch(e){return null}}
 async function idbPut(v){const db=await openDb();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,DRAFT_KEY);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}
 async function idbDelete(){try{const db=await openDb();return await new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(DRAFT_KEY);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}catch(e){}}
-async function saveDraft(){if(pageDirty){requestNavigation(saveDraft);return}if(!pages)return;const updated=buildUpdatedHtml();await idbPut({savedAt:Date.now(),baseHash,sourceLabel,originalText,updatedText:updated,pages});globalDirty=false;showToast('✓ Bozza salvata sul browser',true);setStatus('Bozza locale salvata. Nessuna lettura o scrittura Firestore.');await checkDraft()}
+async function persistDraft(quiet=false){if(!pages)return;const updated=buildUpdatedHtml();const snapshot={savedAt:Date.now(),baseHash,sourceLabel,originalText,updatedText:updated,pages:structuredClone(pages)};await idbPut(snapshot);availableDraft=snapshot;if(!quiet){showToast('✓ Salvato',true);setStatus('Bozza salvata sul browser. Premi Pubblica per aggiornare il regolamento online.')}}
 async function checkDraft(){availableDraft=await idbGet();draftBox.classList.toggle('show',!!availableDraft);if(availableDraft){const d=new Date(availableDraft.savedAt);const same=availableDraft.baseHash===baseHash;draftText.textContent=`Bozza del ${d.toLocaleString('it-IT')}${same?' · basata su questa versione':' · attenzione: deriva da una versione diversa del regolamento'}.`}}
 async function restoreDraft(){if(!availableDraft)return;if(availableDraft.baseHash!==baseHash&&!confirm('La bozza deriva da una versione diversa del regolamento online. Ripristinarla comunque?'))return;originalText=availableDraft.originalText;pages=structuredClone(availableDraft.pages);baseHash=availableDraft.baseHash;sourceLabel=availableDraft.sourceLabel+' · bozza';globalDirty=true;activateLoaded();showToast('Bozza ripristinata',true)}
 async function discardDraft(){await idbDelete();availableDraft=null;draftBox.classList.remove('show');showToast('Bozza eliminata')}
-function activateLoaded(){draftBtn.disabled=false;exportBtn.disabled=false;sourceUrl.textContent=sourceLabel;const first=pages.magizoologia?'magizoologia':Object.keys(pages)[0];if(first)loadPage(first)}
-async function acceptSource(text,label){const parsed=parseRegulation(text);originalText=text;sourceLabel=label;baseHash=await hashText(text);pages=parsed.pages;currentSlug=null;globalDirty=false;editing=false;activateLoaded();setConn('ok','Collegato');setStatus(`${Object.keys(pages).length} pagine riconosciute · regolamento caricato da GitHub Pages.`);await checkDraft()}
+function activateLoaded(){sourceUrl.textContent=sourceLabel;const first=pages.magizoologia?'magizoologia':Object.keys(pages)[0];if(first)loadPage(first)}
+async function acceptSource(text,label){const parsed=parseRegulation(text);originalText=text;sourceLabel=label;baseHash=await hashText(text);pages=parsed.pages;currentSlug=null;globalDirty=false;editing=false;previewPatches={};try{localStorage.removeItem(PREVIEW_KEY)}catch(e){}activateLoaded();setConn('ok','Collegato');setStatus(`${Object.keys(pages).length} pagine riconosciute · regolamento caricato da GitHub Pages.`);await checkDraft()}
 async function loadOnline(){setConn('warn','Connessione…');setStatus('Caricamento del regolamento pubblicato…');try{const u=new URL(REGULATION_URL);u.searchParams.set('_editor',Date.now());const r=await fetch(u.toString(),{cache:'no-store'});if(!r.ok)throw new Error(`Errore HTTP ${r.status}`);await acceptSource(await r.text(),REGULATION_URL)}catch(e){setConn('warn','Non collegato');setStatus(e.message);emptyState.style.display='block';pageCard.classList.remove('ready');sidebarNav.innerHTML='<div class="side-status">Regolamento non disponibile.</div>';showToast('Caricamento online non riuscito')}}
 sidebarBack.addEventListener('click',zoomOut);sidebarForward.addEventListener('click',zoomIn);
 sidebarNav.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.sideAnchor){const target=(editing?visualEditor:reader).querySelector('#'+CSS.escape(b.dataset.sideAnchor));target?.scrollIntoView({behavior:'smooth',block:'start'});return}if(b.dataset.sideLevel&&b.dataset.sidePage){const level=b.dataset.sideLevel,slug=b.dataset.sidePage;requestNavigation(()=>{enterLevel(level);loadPage(slug)});return}if(b.dataset.sideLevel){enterLevel(b.dataset.sideLevel);return}if(b.dataset.sidePage)navigateTo(b.dataset.sidePage)});
-editBtn.addEventListener('click',startEdit);[titleInput,subtitleInput,crumbInput,modeInput,aliasInput].forEach(el=>el.addEventListener('input',()=>setDirty(true)));visualEditor.addEventListener('input',()=>{setDirty(true);renderSidebar()});
-$('#toolbar').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.preventDefault();visualEditor.focus();if(b.dataset.cmd)document.execCommand(b.dataset.cmd,false,null);if(b.dataset.block)document.execCommand('formatBlock',false,b.dataset.block);setDirty(true)});$('#linkBtn').addEventListener('click',e=>{e.preventDefault();const u=prompt('URL del collegamento:');if(u){visualEditor.focus();document.execCommand('createLink',false,u);setDirty(true)}});
+editBtn.addEventListener('click',startEdit);[titleInput,subtitleInput,modeInput,aliasInput].forEach(el=>el.addEventListener('input',()=>setDirty(true)));visualEditor.addEventListener('input',()=>{setDirty(true);renderSidebar()});
+function rememberSelection(){const sel=getSelection();if(sel&&sel.rangeCount&&visualEditor.contains(sel.anchorNode))savedRange=sel.getRangeAt(0).cloneRange()}
+function restoreSelection(){if(savedRange){const sel=getSelection();sel.removeAllRanges();sel.addRange(savedRange)}visualEditor.focus()}
+function exec(cmd,value=null){restoreSelection();try{document.execCommand('styleWithCSS',false,true)}catch(e){}document.execCommand(cmd,false,value);rememberSelection();setDirty(true)}
+function insertHtml(html){restoreSelection();document.execCommand('insertHTML',false,html);rememberSelection();setDirty(true)}
+visualEditor.addEventListener('keyup',rememberSelection);visualEditor.addEventListener('mouseup',rememberSelection);visualEditor.addEventListener('focus',rememberSelection);document.addEventListener('selectionchange',()=>{const sel=getSelection();if(sel&&sel.rangeCount&&visualEditor.contains(sel.anchorNode))rememberSelection()});
+$('#toolbar').addEventListener('mousedown',e=>{if(e.target.closest('button,select'))rememberSelection()});
+$('#toolbar').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.preventDefault();if(b.dataset.cmd)exec(b.dataset.cmd);if(b.dataset.block)exec('formatBlock',b.dataset.block)});
+$('#linkBtn').addEventListener('click',e=>{e.preventDefault();const u=prompt('URL del collegamento:','https://');if(u)exec('createLink',u)});
+imgBtn.addEventListener('click',e=>{e.preventDefault();const u=prompt('URL dell’immagine:','https://');if(u)exec('insertImage',u)});
+atBtn.addEventListener('click',e=>{e.preventDefault();insertHtml('@')});
+diceBtn.addEventListener('click',e=>{e.preventDefault();const d=prompt('Dado o formula da citare (es. 1d20):','1d20');if(d)insertHtml(`<span class="dice-ref">⚄ ${escapeHtml(d)}</span>`)});
+tagBtn.addEventListener('click',e=>{e.preventDefault();const t=prompt('Tag da inserire:','');if(t)insertHtml(`<span class="tag-ref">@${escapeHtml(t.replace(/^@/,''))}</span>`)});
+quoteBtn.addEventListener('click',e=>{e.preventDefault();exec('formatBlock','blockquote')});
+codeBtn.addEventListener('click',e=>{e.preventDefault();exec('formatBlock','pre')});
+spoilerBtn.addEventListener('click',e=>{e.preventDefault();restoreSelection();let selected='';const sel=getSelection();if(sel&&sel.rangeCount)selected=sel.toString();const summary=prompt('Titolo dello spoiler:','Mostra');if(summary!==null)insertHtml(`<details><summary>${escapeHtml(summary||'Mostra')}</summary><p>${escapeHtml(selected)||'Contenuto'}</p></details>`)});
+fontSelect.addEventListener('change',()=>{if(fontSelect.value)exec('fontName',fontSelect.value);fontSelect.value=''});
+sizeSelect.addEventListener('change',()=>{if(sizeSelect.value)exec('fontSize',sizeSelect.value);sizeSelect.value=''});
+colorSelect.addEventListener('change',()=>{if(colorSelect.value)exec('foreColor',colorSelect.value);colorSelect.value=''});
 savePageBtn.addEventListener('click',commitCurrent);discardPageBtn.addEventListener('click',()=>{if(!pageDirty||confirm('Scartare le modifiche non salvate di questa pagina?'))discardCurrent()});
 stayBtn.addEventListener('click',closeUnsaved);discardGoBtn.addEventListener('click',()=>{discardCurrent();const go=pendingNavigation;unsavedModal.classList.remove('show');pendingNavigation=null;go?.()});saveGoBtn.addEventListener('click',()=>{commitCurrent();const go=pendingNavigation;unsavedModal.classList.remove('show');pendingNavigation=null;go?.()});unsavedModal.addEventListener('click',e=>{if(e.target===unsavedModal)closeUnsaved()});
-reloadBtn.addEventListener('click',()=>requestNavigation(()=>{if(globalDirty&&!confirm('Ricaricare il regolamento online e perdere le modifiche non salvate in bozza?'))return;loadOnline()}));fileInput.addEventListener('change',async()=>{const f=fileInput.files&&fileInput.files[0];if(!f)return;requestNavigation(async()=>{try{await acceptSource(await f.text(),'File locale · '+f.name)}catch(e){setConn('warn','File non valido');setStatus(e.message);showToast(e.message)}})});draftBtn.addEventListener('click',saveDraft);restoreDraftBtn.addEventListener('click',restoreDraft);discardDraftBtn.addEventListener('click',discardDraft);exportBtn.addEventListener('click',exportHtml);publishBtn.addEventListener('click',()=>{if(pageDirty){requestNavigation(()=>publishBtn.click());return}showToast('Pubblicazione diretta: prossimo collegamento Firebase',false);setStatus('Il pulsante Pubblica verrà collegato a Firebase Authentication + Cloud Function, senza usare Firestore.')});
+reloadBtn.addEventListener('click',()=>requestNavigation(()=>{if(globalDirty&&!confirm('Aggiornare dal sito? Le modifiche salvate ma non ancora pubblicate resteranno nella bozza locale, ma la vista tornerà alla versione online.'))return;loadOnline()}));restoreDraftBtn.addEventListener('click',restoreDraft);discardDraftBtn.addEventListener('click',discardDraft);
+function openConnectedPreview(){if(pageDirty){requestNavigation(openConnectedPreview);return}if(currentSlug&&!previewPatches[currentSlug])syncPreview();const u=new URL(REGULATION_URL);u.searchParams.set('staffpreview','1');u.hash='#/'+(currentSlug||'home');window.open(u.toString(),'felix-regolamento-preview');showToast('Anteprima collegata aperta',true)}
+previewBtn.addEventListener('click',openConnectedPreview);
+publishBtn.addEventListener('click',()=>{if(pageDirty){requestNavigation(()=>publishBtn.click());return}showToast('Pubblicazione GitHub non ancora attiva',false);setStatus('La connessione di anteprima è attiva. Per rendere le modifiche pubbliche a tutti serve ancora collegare il pulsante Pubblica a Firebase/GitHub.')});
 window.addEventListener('beforeunload',e=>{if(globalDirty||pageDirty){e.preventDefault();e.returnValue=''}});sourceUrl.textContent=REGULATION_URL;loadOnline();
 })();
 </script>
