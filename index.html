@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Editor Staff v7 · Felix Felicis GdR</title>
+<title>Editor Staff v8 · Felix Felicis GdR</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Labrada:wght@400;500;700&display=swap');
 @font-face{font-family:'Federo';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/federo/v17/iJWFBX-cbD_ETsbWilmf.woff2') format('woff2')}
@@ -175,19 +175,6 @@ body.staff-locked .topbar,body.staff-locked .workspace,body.staff-locked .toast,
 <div class="modal-backdrop" id="unsavedModal" role="dialog" aria-modal="true" aria-labelledby="unsavedTitle">
   <div class="modal"><h2 id="unsavedTitle">Modifiche non salvate</h2><p>Hai modificato questa pagina. Prima di spostarti puoi salvarla, scartare le modifiche oppure restare qui.</p><div class="modal-actions"><button class="btn" id="stayBtn">Resta qui</button><button class="btn danger" id="discardGoBtn">Scarta e continua</button><button class="btn success" id="saveGoBtn">Salva e continua</button></div></div>
 </div>
-<div class="modal-backdrop" id="githubModal" role="dialog" aria-modal="true" aria-labelledby="githubTitle">
-  <div class="modal">
-    <h2 id="githubTitle">Collega GitHub</h2>
-    <p>Per pubblicare direttamente nel regolamento serve un token GitHub con accesso al solo repository <b>regolamento</b>.</p>
-    <div class="github-connect-body">
-      <label for="githubToken">Fine-grained Personal Access Token</label>
-      <input type="password" id="githubToken" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
-      <div class="github-connect-note"><b>Repository:</b> felixfelicisharrypottergdr-jpg/regolamento · <b>branch:</b> main · <b>file:</b> index.html.<br>Il token viene memorizzato su questo browser: dopo il primo collegamento non ti verrà più richiesto, salvo revoca o cancellazione dei dati del browser.</div>
-      <div class="github-connect-status" id="githubStatus" aria-live="polite"></div>
-    </div>
-    <div class="modal-actions"><button class="btn" id="githubCancel">Annulla</button><button class="btn success" id="githubConnectPublish">Collega e pubblica</button></div>
-  </div>
-</div>
 <script>
 (()=>{
 'use strict';
@@ -195,7 +182,7 @@ const REGULATION_URL='https://felixfelicisharrypottergdr-jpg.github.io/regolamen
 const START='/* FELIX_CONTENT_START */',END='/* FELIX_CONTENT_END */';
 const DB_NAME='felix_staff_regolamento',STORE='drafts',DRAFT_KEY='main';
 const PREVIEW_KEY='ff_regolamento_staff_preview_v1',PREVIEW_CHANNEL='ff-regolamento-preview';
-const GH_OWNER='felixfelicisharrypottergdr-jpg',GH_REPO='regolamento',GH_BRANCH='main',GH_PATH='index.html',GH_TOKEN_KEY='ff_regolamento_github_token_v1';
+const PUBLISHER_URL='https://editor.felixfelicisharrypottergdr.workers.dev/publish';
 const $=s=>document.querySelector(s);
 const connPill=$('#connPill'),status=$('#status'),reloadBtn=$('#reloadBtn'),publishBtn=$('#publishBtn'),previewBtn=$('#previewBtn'),sourceUrl=$('#sourceUrl');
 const sidebarNav=$('#sidebarNav'),sidebarTitle=$('#sidebarTitle'),sidebarEyebrow=$('#sidebarEyebrow'),sidebarBack=$('#sidebarBack'),sidebarForward=$('#sidebarForward');
@@ -204,7 +191,6 @@ const slugLabel=$('#slugLabel'),titleInput=$('#titleInput'),subtitleInput=$('#su
 const fontSelect=$('#fontSelect'),sizeSelect=$('#sizeSelect'),colorSelect=$('#colorSelect'),imgBtn=$('#imgBtn'),atBtn=$('#atBtn'),diceBtn=$('#diceBtn'),tagBtn=$('#tagBtn'),quoteBtn=$('#quoteBtn'),codeBtn=$('#codeBtn'),spoilerBtn=$('#spoilerBtn');
 const draftBox=$('#draftBox'),draftText=$('#draftText'),restoreDraftBtn=$('#restoreDraftBtn'),discardDraftBtn=$('#discardDraftBtn'),toast=$('#toast');
 const unsavedModal=$('#unsavedModal'),stayBtn=$('#stayBtn'),discardGoBtn=$('#discardGoBtn'),saveGoBtn=$('#saveGoBtn');
-const githubModal=$('#githubModal'),githubToken=$('#githubToken'),githubStatus=$('#githubStatus'),githubCancel=$('#githubCancel'),githubConnectPublish=$('#githubConnectPublish');
 let originalText='',sourceLabel='',baseHash='',pages=null,currentSlug=null,pageDirty=false,globalDirty=false,availableDraft=null,editing=false,pendingNavigation=null,previewPatches={};
 let savedRange=null;
 const previewChannel=('BroadcastChannel' in window)?new BroadcastChannel(PREVIEW_CHANNEL):null;
@@ -218,50 +204,36 @@ function setDirty(v=true){pageDirty=v;saveState.className='save-state '+(v?'dirt
 function applyTheme(slug){document.body.classList.remove('theme-arc','theme-erb','theme-med','theme-dif','theme-div','theme-men');let t='';if(['magizoologia','fiducia','domesticazione','bestiario-demo'].includes(slug))t='erb';else if(['manuale-incantesimi'].includes(slug))t='dif';if(t){const map={arc:['--arc','--arc-d','--arc-a','--arc-l','--arc-p','--arc-e'],erb:['--erb','--erb-d','--erb-a','--erb-l','--erb-p','--erb-e'],med:['--med','--med-d','--med-a','--med-l','--med-p','--med-e'],dif:['--dif','--dif-d','--dif-a','--dif-l','--dif-p','--dif-e'],div:['--div','--div-d','--div-a','--div-l','--div-p','--div-e'],men:['--men','--men-d','--men-a','--men-l','--men-p','--men-e']}[t];const vars=['--sap-c','--sap-d','--sap-a','--sap-l','--sap-p','--sap-e'];map.forEach((src,i)=>document.documentElement.style.setProperty(vars[i],`var(${src})`))}else{[['--sap-c','#5d4435'],['--sap-d','#211915'],['--sap-a','#8a684d'],['--sap-l','#c49a61'],['--sap-p','#f4e5cf'],['--sap-e','#b78d51']].forEach(([k,v])=>document.documentElement.style.setProperty(k,v))}}
 function parseRegulation(text){const fmt=text.match(/<!--\s*FELIX_EDITOR_FORMAT:(\d+)\s*-->/i);if(!fmt)throw new Error('La versione online non è predisposta per l’Editor Staff.');const a=text.indexOf(START),b=text.indexOf(END,a+START.length);if(a<0||b<0)throw new Error('Blocco dei contenuti non trovato.');const block=text.slice(a+START.length,b),m=block.match(/const\s+PAGES\s*=\s*([\s\S]*?)\s*;\s*$/);if(!m)throw new Error('Archivio PAGES non riconosciuto.');try{return{pages:JSON.parse(m[1]),format:Number(fmt[1])}}catch(e){throw new Error('I contenuti non sono leggibili: '+e.message)}}
 async function hashText(text){try{if(crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}}catch(e){}let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
-function getGithubToken(){
-  try{
-    const persistent=localStorage.getItem(GH_TOKEN_KEY)||'';
-    if(persistent)return persistent;
-    const legacy=sessionStorage.getItem(GH_TOKEN_KEY)||'';
-    if(legacy){
-      localStorage.setItem(GH_TOKEN_KEY,legacy);
-      sessionStorage.removeItem(GH_TOKEN_KEY);
-      return legacy;
-    }
-    return '';
-  }catch(e){return ''}
+async function getStaffIdToken(){
+  if(typeof window.felixGetStaffIdToken!=='function')throw new Error('STAFF_AUTH_NOT_READY');
+  return await window.felixGetStaffIdToken();
 }
-function setGithubToken(token){
-  try{
-    localStorage.setItem(GH_TOKEN_KEY,String(token||'').trim());
-    sessionStorage.removeItem(GH_TOKEN_KEY);
-  }catch(e){}
+function publisherErrorMessage(code,detail=''){
+  const map={
+    AUTH_REQUIRED:'Sessione Staff non disponibile. Esci e accedi di nuovo con la Password Staff.',
+    AUTH_INVALID:'Autenticazione Staff scaduta. Esci e accedi di nuovo.',
+    STAFF_SESSION_MISSING:'La sessione Staff non è più attiva. Accedi di nuovo con la Password Staff.',
+    STAFF_SESSION_INVALID:'La sessione Staff non è valida. Accedi di nuovo con la Password Staff.',
+    STAFF_SESSION_EXPIRED:'La sessione Staff è scaduta. Accedi di nuovo con la Password Staff.',
+    STAFF_SESSION_UNREADABLE:'Impossibile verificare la sessione Staff. Riprova tra poco.',
+    REMOTE_CHANGED:'Il regolamento online è cambiato dopo che hai aperto l’editor. Premi Aggiorna e riapplica le modifiche necessarie.',
+    GITHUB_TOKEN_INVALID:'Il collegamento GitHub del servizio non è più valido. Il Narratore deve aggiornare il Secret GITHUB_TOKEN su Cloudflare.',
+    GITHUB_FORBIDDEN:'Il servizio non ha i permessi necessari sul repository regolamento.',
+    GITHUB_FILE_NOT_FOUND:'Il servizio non trova regolamento/index.html su GitHub.',
+    SERVER_NOT_CONFIGURED:'Il servizio di pubblicazione non è configurato: manca il Secret GITHUB_TOKEN.',
+    INVALID_REGULATION_FILE:'Il file generato non è riconosciuto come regolamento Felix.',
+    CONTENT_TOO_LARGE:'Il regolamento è troppo grande per il servizio di pubblicazione.',
+    ORIGIN_NOT_ALLOWED:'Questa pagina non è autorizzata a usare il servizio di pubblicazione.'
+  };
+  return map[code]||(detail?`${code}: ${detail}`:`Errore di pubblicazione (${code||'sconosciuto'}).`);
 }
-function clearGithubToken(){
-  try{localStorage.removeItem(GH_TOKEN_KEY)}catch(e){}
-  try{sessionStorage.removeItem(GH_TOKEN_KEY)}catch(e){}
-}
-function setGithubStatus(msg='',ok=false){githubStatus.textContent=msg;githubStatus.classList.toggle('ok',!!ok)}
-function openGithubModal(message=''){setGithubStatus(message,false);githubToken.value=getGithubToken();githubModal.classList.add('show');setTimeout(()=>githubToken.focus(),80)}
-function closeGithubModal(){githubModal.classList.remove('show');githubToken.value='';setGithubStatus('')}
-function utf8ToBase64(text){const bytes=new TextEncoder().encode(text);let binary='';const step=0x8000;for(let i=0;i<bytes.length;i+=step){binary+=String.fromCharCode(...bytes.subarray(i,i+step))}return btoa(binary)}
-function base64ToUtf8(value){const bin=atob(String(value||'').replace(/\s/g,''));const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new TextDecoder().decode(bytes)}
-async function githubRequest(url,token,options={}){const headers=Object.assign({'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,'X-GitHub-Api-Version':'2026-03-10'},options.headers||{});return fetch(url,Object.assign({},options,{headers}))}
-async function publishToGithub(token){
-  token=String(token||'').trim();
-  if(!token){openGithubModal('Inserisci il token GitHub.');return}
+async function publishViaWorker(){
   if(!pages){showToast('Regolamento non ancora caricato');return}
-
-  // Se l'utente sta ancora scrivendo, Pubblica acquisisce automaticamente
-  // il contenuto corrente prima di controllare cosa è cambiato.
   if(pageDirty)commitCurrent();
 
   let updated;
   try{updated=buildUpdatedHtml()}catch(e){showToast(e.message);return}
   const updatedHash=await hashText(updated);
-
-  // Non ci affidiamo più al solo flag globalDirty: confrontiamo davvero
-  // l'HTML generato con la versione online caricata.
   if(updatedHash===baseHash){
     showToast('Nessuna modifica da pubblicare',true);
     setStatus('Il regolamento pubblicato è già allineato con la bozza.');
@@ -269,42 +241,41 @@ async function publishToGithub(token){
   }
 
   globalDirty=true;
-  publishBtn.disabled=true;githubConnectPublish.disabled=true;setStatus('Controllo della versione GitHub…');setGithubStatus('Verifica accesso e versione…');
+  publishBtn.disabled=true;
+  setStatus('Verifica della sessione Staff e pubblicazione…');
   try{
-    const endpoint=`https://api.github.com/repos/${encodeURIComponent(GH_OWNER)}/${encodeURIComponent(GH_REPO)}/contents/${GH_PATH}`;
-    const getResp=await githubRequest(endpoint+'?ref='+encodeURIComponent(GH_BRANCH),token,{method:'GET',cache:'no-store'});
-    if(getResp.status===401){clearGithubToken();throw new Error('TOKEN_INVALID')}
-    if(getResp.status===403){throw new Error('TOKEN_FORBIDDEN')}
-    if(getResp.status===404){throw new Error('REPO_NOT_FOUND')}
-    if(!getResp.ok){throw new Error('GitHub GET '+getResp.status)}
-    const remote=await getResp.json();
-    const remoteText=base64ToUtf8(remote.content||'');
-    const remoteHash=await hashText(remoteText);
-    if(remoteHash!==baseHash){throw new Error('REMOTE_CHANGED')}
-    setStatus('Pubblicazione su GitHub…');setGithubStatus('Invio del nuovo regolamento…');
-    const body={message:'Aggiorna regolamento via Editor Staff',content:utf8ToBase64(updated),sha:remote.sha,branch:GH_BRANCH};
-    const putResp=await githubRequest(endpoint,token,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(putResp.status===401){clearGithubToken();throw new Error('TOKEN_INVALID')}
-    if(putResp.status===403){throw new Error('TOKEN_FORBIDDEN')}
-    if(putResp.status===409){throw new Error('REMOTE_CHANGED')}
-    if(!putResp.ok){let detail='';try{const j=await putResp.json();detail=j&&j.message?': '+j.message:''}catch(e){}throw new Error('GitHub PUT '+putResp.status+detail)}
-    const result=await putResp.json();
-    setGithubToken(token);
-    originalText=updated;baseHash=updatedHash;sourceLabel=`GitHub · ${GH_BRANCH}`;globalDirty=false;
+    const idToken=await getStaffIdToken();
+    const resp=await fetch(PUBLISHER_URL,{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+idToken,'Content-Type':'application/json'},
+      body:JSON.stringify({content:updated,baseHash})
+    });
+    let result={};
+    try{result=await resp.json()}catch(_e){}
+    if(!resp.ok||!result.ok){
+      const err=new Error(result.code||('HTTP_'+resp.status));
+      err.code=result.code||('HTTP_'+resp.status);
+      err.detail=result.detail||'';
+      throw err;
+    }
+
+    originalText=updated;
+    baseHash=updatedHash;
+    sourceLabel='GitHub · main';
+    globalDirty=false;
     await idbDelete();availableDraft=null;draftBox.classList.remove('show');
-    const shortSha=result&&result.commit&&result.commit.sha?String(result.commit.sha).slice(0,7):'';
-    setStatus(`✓ Pubblicato su GitHub${shortSha?' · commit '+shortSha:''}. GitHub Pages si aggiornerà a breve.`);
-    setGithubStatus('✓ Pubblicazione completata.',true);showToast('✓ Pubblicato su GitHub',true);
-    setTimeout(closeGithubModal,650);
+    const shortSha=result.commitSha?String(result.commitSha).slice(0,7):'';
+    setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''}. GitHub Pages si aggiornerà a breve.`);
+    showToast('✓ Pubblicato sul regolamento',true);
   }catch(e){
-    console.error('Pubblicazione GitHub:',e);
-    const code=e&&e.message?e.message:String(e);
-    if(code==='TOKEN_INVALID'){openGithubModal('Token non valido o revocato. Inseriscine uno valido.');setStatus('Pubblicazione non riuscita: token GitHub non valido.');}
-    else if(code==='TOKEN_FORBIDDEN'){openGithubModal('Il token non ha il permesso Contents: Read and write sul repository regolamento.');setStatus('Pubblicazione non riuscita: permessi GitHub insufficienti.');}
-    else if(code==='REPO_NOT_FOUND'){openGithubModal('Repository o file non raggiungibile con questo token. Controlla che il token abbia accesso a regolamento.');setStatus('Pubblicazione non riuscita: repository non raggiungibile.');}
-    else if(code==='REMOTE_CHANGED'){setGithubStatus('');setStatus('GitHub contiene una versione più recente: pubblicazione bloccata per evitare di sovrascriverla. Premi Aggiorna e riapplica le modifiche necessarie.');showToast('Versione GitHub cambiata: pubblicazione bloccata');}
-    else{setGithubStatus('Errore durante la pubblicazione.');setStatus('Pubblicazione GitHub non riuscita: '+code);showToast('Pubblicazione non riuscita');}
-  }finally{publishBtn.disabled=false;githubConnectPublish.disabled=false}
+    console.error('Pubblicazione tramite servizio:',e);
+    const code=e&&e.code?e.code:(e&&e.message?e.message:'UNKNOWN');
+    const msg=publisherErrorMessage(code,e&&e.detail?e.detail:'');
+    setStatus(msg);
+    showToast(code==='REMOTE_CHANGED'?'Versione online cambiata: pubblicazione bloccata':'Pubblicazione non riuscita');
+  }finally{
+    publishBtn.disabled=false;
+  }
 }
 
 const SIDEBAR_GROUPS={
@@ -325,10 +296,37 @@ function renderSidebar(){if(!pages){sidebarNav.innerHTML='<div class="side-statu
 function zoomOut(){const level=SIDEBAR_LEVELS[sidebarLevel];if(!level?.parent)return;sidebarForwardStack.push(sidebarLevel);sidebarLevel=level.parent;renderSidebar()}
 function zoomIn(){if(!sidebarForwardStack.length)return;const n=sidebarForwardStack.pop();if(SIDEBAR_LEVELS[n]){sidebarLevel=n;renderSidebar()}}
 function enterLevel(levelKey){if(!SIDEBAR_LEVELS[levelKey])return;sidebarForwardStack=[];sidebarLevel=levelKey;renderSidebar()}
-function currentFormHtml(){return visualEditor.innerHTML}
+function hideLegacyEmbeddedIndex(container){
+  if(!container)return;
+  const children=[...container.children].slice(0,32);
+  const idx=children.findIndex(el=>/\bINDICE\b/i.test((el.textContent||'').trim()));
+  if(idx<0)return;
+  let first=children[idx],n=first;
+  const wrap=document.createElement('div');
+  wrap.dataset.editorLegacyIndex='1';
+  wrap.style.display='none';
+  wrap.setAttribute('aria-hidden','true');
+  if(container===visualEditor)wrap.contentEditable='false';
+  first.parentNode.insertBefore(wrap,first);
+  while(n){
+    const next=n.nextElementSibling;
+    if(/^H[1-4]$/.test(n.tagName))break;
+    wrap.appendChild(n);
+    n=next;
+  }
+}
+function currentFormHtml(){
+  const clone=visualEditor.cloneNode(true);
+  clone.querySelectorAll('[data-editor-legacy-index="1"]').forEach(w=>{
+    const parent=w.parentNode;
+    while(w.firstChild)parent.insertBefore(w.firstChild,w);
+    w.remove();
+  });
+  return clone.innerHTML;
+}
 function renderAutoPath(p){const parts=(p.crumb||[]);pathDisplay.innerHTML=parts.map((x,i)=>`${i?'<span class=\"sep\">›</span>':''}<span>${escapeHtml(x)}</span>`).join('')}
-function populateForm(){const p=pages[currentSlug];titleInput.value=p.title||'';subtitleInput.value=p.subtitle||'';renderAutoPath(p);modeInput.value=p.mode==='dark'?'dark':'paper';aliasInput.value=(p.aliases||[]).join('\n');visualEditor.innerHTML=p.html||'';slugLabel.textContent=currentSlug}
-function renderPage(){const p=pages[currentSlug];if(!p)return;applyTheme(currentSlug);pageKicker.textContent=(p.crumb&&p.crumb.length?p.crumb.slice(0,-1).join(' › '):'Regolamento')||'Regolamento';pageTitle.textContent=cleanTitle(p.title||currentSlug);pageSubtitle.textContent=p.subtitle||'';reader.innerHTML=p.html||'';reader.style.display=editing?'none':'block';editorPanel.classList.toggle('show',editing);editBtn.textContent=editing?'Chiudi modifica':'Modifica';setDirty(false);renderSidebar()}
+function populateForm(){const p=pages[currentSlug];titleInput.value=p.title||'';subtitleInput.value=p.subtitle||'';renderAutoPath(p);modeInput.value=p.mode==='dark'?'dark':'paper';aliasInput.value=(p.aliases||[]).join('\n');visualEditor.innerHTML=p.html||'';hideLegacyEmbeddedIndex(visualEditor);slugLabel.textContent=currentSlug}
+function renderPage(){const p=pages[currentSlug];if(!p)return;applyTheme(currentSlug);pageKicker.textContent=(p.crumb&&p.crumb.length?p.crumb.slice(0,-1).join(' › '):'Regolamento')||'Regolamento';pageTitle.textContent=cleanTitle(p.title||currentSlug);pageSubtitle.textContent=p.subtitle||'';reader.innerHTML=p.html||'';hideLegacyEmbeddedIndex(reader);reader.style.display=editing?'none':'block';editorPanel.classList.toggle('show',editing);editBtn.textContent=editing?'Chiudi modifica':'Modifica';setDirty(false);renderSidebar()}
 function startEdit(){if(!currentSlug)return;if(!editing){editing=true;populateForm();reader.style.display='none';editorPanel.classList.add('show');editBtn.textContent='Chiudi modifica';setDirty(false);renderSidebar();visualEditor.focus()}else{if(pageDirty){requestNavigation(()=>{editing=false;renderPage()})}else{editing=false;renderPage()}}}
 function syncPreview(){if(!pages||!currentSlug)return;previewPatches[currentSlug]=structuredClone(pages[currentSlug]);try{localStorage.setItem(PREVIEW_KEY,JSON.stringify({savedAt:Date.now(),patches:previewPatches,currentSlug}));previewChannel?.postMessage({type:'preview-update',slug:currentSlug});previewNote.classList.add('show')}catch(e){console.warn('Anteprima collegata non disponibile',e)}}
 function commitCurrent(){if(!pages||!currentSlug)return;const p=pages[currentSlug];p.title=titleInput.value.trim();p.subtitle=subtitleInput.value.trim();p.mode=modeInput.value;p.aliases=aliasInput.value.split(/\n+/).map(x=>x.trim()).filter(Boolean);p.html=currentFormHtml();globalDirty=true;setDirty(false);syncPreview();renderPage();persistDraft(true);showToast('✓ Salvato · anteprima aggiornata',true);setStatus('Salvato in bozza. La modalità Anteprima Staff del regolamento è stata aggiornata.')}
@@ -402,9 +400,7 @@ stayBtn.addEventListener('click',closeUnsaved);discardGoBtn.addEventListener('cl
 reloadBtn.addEventListener('click',()=>requestNavigation(()=>{if(globalDirty&&!confirm('Aggiornare dal sito? Le modifiche salvate ma non ancora pubblicate resteranno nella bozza locale, ma la vista tornerà alla versione online.'))return;loadOnline()}));restoreDraftBtn.addEventListener('click',restoreDraft);discardDraftBtn.addEventListener('click',discardDraft);
 function openConnectedPreview(){if(pageDirty){requestNavigation(openConnectedPreview);return}if(currentSlug&&!previewPatches[currentSlug])syncPreview();const u=new URL(REGULATION_URL);u.searchParams.set('staffpreview','1');u.hash='#/'+(currentSlug||'home');window.open(u.toString(),'felix-regolamento-preview');showToast('Anteprima collegata aperta',true)}
 previewBtn.addEventListener('click',openConnectedPreview);
-publishBtn.addEventListener('click',()=>{if(pageDirty){requestNavigation(()=>publishBtn.click());return}const token=getGithubToken();if(!token){openGithubModal();return}publishToGithub(token)});
-githubCancel.addEventListener('click',closeGithubModal);githubModal.addEventListener('click',e=>{if(e.target===githubModal)closeGithubModal()});githubToken.addEventListener('keydown',e=>{if(e.key==='Enter')githubConnectPublish.click()});githubConnectPublish.addEventListener('click',()=>{const token=githubToken.value.trim();if(!token){setGithubStatus('Inserisci il token GitHub.');return}setGithubToken(token);publishToGithub(token)});
-window.addEventListener('felix-staff-access',e=>{if(!e.detail||!e.detail.unlocked){closeGithubModal()}});
+publishBtn.addEventListener('click',()=>{if(pageDirty){requestNavigation(()=>publishBtn.click());return}publishViaWorker()});
 window.addEventListener('beforeunload',e=>{if(globalDirty||pageDirty){e.preventDefault();e.returnValue=''}});sourceUrl.textContent=REGULATION_URL;loadOnline();
 })();
 </script>
@@ -432,6 +428,13 @@ function unlockUi(until){document.body.classList.remove('staff-locked');gate.cla
 function lockUi(message=''){document.body.classList.add('staff-locked');gate.classList.remove('hidden');sessionUi.classList.remove('show');try{sessionStorage.removeItem(ACCESS_KEY)}catch(e){};if(message)gateStatus.textContent=message;pwInput.value='';setTimeout(()=>pwInput.focus(),80);window.dispatchEvent(new CustomEvent('felix-staff-access',{detail:{unlocked:false}}))}
 function setGate(message,ok=false){gateStatus.textContent=message;gateStatus.classList.toggle('ok',!!ok)}
 async function ensureAuth(){if(authReady&&auth.currentUser)return auth.currentUser;await setPersistence(auth,browserSessionPersistence);if(!auth.currentUser)await signInAnonymously(auth);return await new Promise((resolve,reject)=>{let done=false;const stop=onAuthStateChanged(auth,u=>{if(done)return;if(u){done=true;authReady=true;stop();resolve(u)}},reject);setTimeout(()=>{if(!done){done=true;stop();reject(new Error('Autenticazione Firebase non disponibile.'))}},9000)})}
+window.felixGetStaffIdToken=async function(){
+  const access=savedAccess();
+  if(!access)throw new Error('STAFF_SESSION_MISSING');
+  const user=await ensureAuth();
+  if(!user)throw new Error('AUTH_REQUIRED');
+  return await user.getIdToken();
+};
 async function verifyStaffPassword(){const pw=pwInput.value;if(!pw){setGate('Inserisci la Password Staff.');return}unlockBtn.disabled=true;setGate('Verifica in corso…');try{const user=await ensureAuth();const ref=doc(db,'staff_edit_sessions',user.uid);await setDoc(ref,{uid:user.uid,proof:pw,createdAt:serverTimestamp()});await updateDoc(ref,{proof:deleteField()});pwInput.value='';const until=Date.now()+TWELVE_HOURS;setGate('Accesso Staff riuscito.',true);unlockUi(until)}catch(e){console.error('Accesso Staff:',e);setGate(e&&e.code==='permission-denied'?'Password Staff non valida.':'Accesso Staff non riuscito. Controlla la connessione e riprova.');try{const u=auth.currentUser;if(u)await deleteDoc(doc(db,'staff_edit_sessions',u.uid))}catch(_e){}}finally{unlockBtn.disabled=false}}
 async function logoutStaff(){try{const u=auth.currentUser;if(u)await deleteDoc(doc(db,'staff_edit_sessions',u.uid))}catch(e){console.warn('Chiusura sessione Staff:',e)}lockUi('Sessione chiusa. Inserisci la Password Staff per rientrare.')}
 unlockBtn.addEventListener('click',verifyStaffPassword);pwInput.addEventListener('keydown',e=>{if(e.key==='Enter')verifyStaffPassword()});logoutBtn.addEventListener('click',logoutStaff);
