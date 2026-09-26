@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Editor Staff v10 · Felix Felicis GdR</title>
+<title>Editor Staff v12 · Felix Felicis GdR</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Labrada:wght@400;500;700&display=swap');
 @font-face{font-family:'Federo';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/federo/v17/iJWFBX-cbD_ETsbWilmf.woff2') format('woff2')}
@@ -193,7 +193,7 @@ const slugLabel=$('#slugLabel'),titleInput=$('#titleInput'),subtitleInput=$('#su
 const fontSelect=$('#fontSelect'),sizeSelect=$('#sizeSelect'),colorSelect=$('#colorSelect'),imgBtn=$('#imgBtn'),atBtn=$('#atBtn'),diceBtn=$('#diceBtn'),tagBtn=$('#tagBtn'),quoteBtn=$('#quoteBtn'),codeBtn=$('#codeBtn'),spoilerBtn=$('#spoilerBtn');
 const draftBox=$('#draftBox'),draftText=$('#draftText'),restoreDraftBtn=$('#restoreDraftBtn'),discardDraftBtn=$('#discardDraftBtn'),toast=$('#toast'),publishProgress=$('#publishProgress');
 const unsavedModal=$('#unsavedModal'),stayBtn=$('#stayBtn'),discardGoBtn=$('#discardGoBtn'),saveGoBtn=$('#saveGoBtn');
-let originalText='',sourceLabel='',baseHash='',pages=null,currentSlug=null,pageDirty=false,globalDirty=false,availableDraft=null,editing=false,pendingNavigation=null,previewPatches={},publishing=false;
+let originalText='',sourceLabel='',baseHash='',pages=null,currentSlug=null,pageDirty=false,globalDirty=false,availableDraft=null,editing=false,pendingNavigation=null,previewPatches={},publishing=false,publicMonitorSeq=0;
 let savedRange=null;
 const previewChannel=('BroadcastChannel' in window)?new BroadcastChannel(PREVIEW_CHANNEL):null;
 let sidebarLevel='root',sidebarForwardStack=[];
@@ -204,17 +204,39 @@ function setPublishProgress(msg,mode='busy'){clearTimeout(setPublishProgress.t);
 function setStatus(msg){status.textContent=msg}
 function setConn(type,text){connPill.className='pill '+(type||'');connPill.textContent='● '+text}
 function delay(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
-async function waitForPublicVersion(expectedHash,timeoutMs=30000){
+async function pagesFingerprintFromHtml(text){
+  try{
+    const parsed=parseRegulation(text);
+    return await hashText(JSON.stringify(parsed.pages));
+  }catch(_e){return ''}
+}
+async function waitForPublicVersion(expectedPagesHash,timeoutMs=30000){
   const started=Date.now();
   while(Date.now()-started<timeoutMs){
     try{
       const u=new URL(REGULATION_URL);u.searchParams.set('_published',Date.now());
       const r=await fetch(u.toString(),{cache:'no-store'});
-      if(r.ok){const text=await r.text();if(await hashText(text)===expectedHash)return {ok:true,text}}
+      if(r.ok){
+        const text=await r.text();
+        if(await pagesFingerprintFromHtml(text)===expectedPagesHash)return {ok:true,text};
+      }
     }catch(_e){}
     await delay(600);
   }
   return {ok:false,text:null};
+}
+async function continueWatchingPublicVersion(expectedPagesHash,shortSha,seq){
+  const publicCheck=await waitForPublicVersion(expectedPagesHash,150000);
+  if(seq!==publicMonitorSeq)return;
+  if(publicCheck.ok){
+    originalText=publicCheck.text||originalText;
+    setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''} · regolamento pubblico aggiornato.`);
+    setPublishProgress('✓ Regolamento pubblico aggiornato','ok');
+    showToast('✓ Regolamento aggiornato',true);
+  }else{
+    setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''} · aggiornamento pubblico non ancora rilevato. Puoi comunque continuare a lavorare.`);
+    setPublishProgress('');
+  }
 }
 function setPublishingState(on,label='Pubblica'){publishing=on;publishBtn.disabled=on;publishBtn.textContent=label;topbar?.classList.toggle('is-publishing',on);reloadBtn.disabled=on}
 function setDirty(v=true){pageDirty=v;saveState.className='save-state '+(v?'dirty':'saved');saveState.innerHTML=v?'● Modifiche non salvate':'<span class="check">✓</span> Salvato';editHint.textContent=v?'Modifiche non ancora salvate':'Nessuna modifica';editHint.classList.toggle('dirty',v)}
@@ -248,6 +270,7 @@ async function publishViaWorker(){
   if(publishing)return;
   if(!pages){showToast('Regolamento non ancora caricato');return}
 
+  const monitorSeq=++publicMonitorSeq;
   setPublishingState(true,pageDirty?'Salvataggio…':'Pubblicazione…');
   setPublishProgress(pageDirty?'Salvataggio delle modifiche…':'Preparazione della pubblicazione…');
   try{
@@ -259,6 +282,7 @@ async function publishViaWorker(){
     let updated;
     try{updated=buildUpdatedHtml()}catch(e){showToast(e.message);return}
     const updatedHash=await hashText(updated);
+    const expectedPagesHash=await hashText(JSON.stringify(pages));
     if(updatedHash===baseHash){
       setPublishProgress('');
       showToast('Nessuna modifica da pubblicare',true);
@@ -294,7 +318,7 @@ async function publishViaWorker(){
     setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''} · attendo l’aggiornamento del regolamento pubblico…`);
     setPublishProgress('Aggiornamento del regolamento pubblico in corso…');
 
-    const publicCheck=await waitForPublicVersion(updatedHash,30000);
+    const publicCheck=await waitForPublicVersion(expectedPagesHash,30000);
     await idbDelete();availableDraft=null;draftBox.classList.remove('show');
     if(publicCheck.ok){
       originalText=publicCheck.text||updated;
@@ -305,6 +329,7 @@ async function publishViaWorker(){
       setStatus(`✓ Pubblicato${shortSha?' · commit '+shortSha:''} · GitHub Pages sta ancora aggiornando il regolamento.`);
       setPublishProgress('Aggiornamento del regolamento ancora in corso…');
       showToast('✓ Pubblicato · aggiornamento del sito in corso',true);
+      continueWatchingPublicVersion(expectedPagesHash,shortSha,monitorSeq);
     }
   }catch(e){
     console.error('Pubblicazione tramite servizio:',e);
