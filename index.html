@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Editor Staff v5 · Felix Felicis GdR</title>
+<title>Editor Staff v7 · Felix Felicis GdR</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Labrada:wght@400;500;700&display=swap');
 @font-face{font-family:'Federo';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/federo/v17/iJWFBX-cbD_ETsbWilmf.woff2') format('woff2')}
@@ -182,7 +182,7 @@ body.staff-locked .topbar,body.staff-locked .workspace,body.staff-locked .toast,
     <div class="github-connect-body">
       <label for="githubToken">Fine-grained Personal Access Token</label>
       <input type="password" id="githubToken" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
-      <div class="github-connect-note"><b>Repository:</b> felixfelicisharrypottergdr-jpg/regolamento · <b>branch:</b> main · <b>file:</b> index.html.<br>Il token resta soltanto nella sessione di questa scheda e viene eliminato quando esci dall’area Staff.</div>
+      <div class="github-connect-note"><b>Repository:</b> felixfelicisharrypottergdr-jpg/regolamento · <b>branch:</b> main · <b>file:</b> index.html.<br>Il token viene memorizzato su questo browser: dopo il primo collegamento non ti verrà più richiesto, salvo revoca o cancellazione dei dati del browser.</div>
       <div class="github-connect-status" id="githubStatus" aria-live="polite"></div>
     </div>
     <div class="modal-actions"><button class="btn" id="githubCancel">Annulla</button><button class="btn success" id="githubConnectPublish">Collega e pubblica</button></div>
@@ -218,9 +218,29 @@ function setDirty(v=true){pageDirty=v;saveState.className='save-state '+(v?'dirt
 function applyTheme(slug){document.body.classList.remove('theme-arc','theme-erb','theme-med','theme-dif','theme-div','theme-men');let t='';if(['magizoologia','fiducia','domesticazione','bestiario-demo'].includes(slug))t='erb';else if(['manuale-incantesimi'].includes(slug))t='dif';if(t){const map={arc:['--arc','--arc-d','--arc-a','--arc-l','--arc-p','--arc-e'],erb:['--erb','--erb-d','--erb-a','--erb-l','--erb-p','--erb-e'],med:['--med','--med-d','--med-a','--med-l','--med-p','--med-e'],dif:['--dif','--dif-d','--dif-a','--dif-l','--dif-p','--dif-e'],div:['--div','--div-d','--div-a','--div-l','--div-p','--div-e'],men:['--men','--men-d','--men-a','--men-l','--men-p','--men-e']}[t];const vars=['--sap-c','--sap-d','--sap-a','--sap-l','--sap-p','--sap-e'];map.forEach((src,i)=>document.documentElement.style.setProperty(vars[i],`var(${src})`))}else{[['--sap-c','#5d4435'],['--sap-d','#211915'],['--sap-a','#8a684d'],['--sap-l','#c49a61'],['--sap-p','#f4e5cf'],['--sap-e','#b78d51']].forEach(([k,v])=>document.documentElement.style.setProperty(k,v))}}
 function parseRegulation(text){const fmt=text.match(/<!--\s*FELIX_EDITOR_FORMAT:(\d+)\s*-->/i);if(!fmt)throw new Error('La versione online non è predisposta per l’Editor Staff.');const a=text.indexOf(START),b=text.indexOf(END,a+START.length);if(a<0||b<0)throw new Error('Blocco dei contenuti non trovato.');const block=text.slice(a+START.length,b),m=block.match(/const\s+PAGES\s*=\s*([\s\S]*?)\s*;\s*$/);if(!m)throw new Error('Archivio PAGES non riconosciuto.');try{return{pages:JSON.parse(m[1]),format:Number(fmt[1])}}catch(e){throw new Error('I contenuti non sono leggibili: '+e.message)}}
 async function hashText(text){try{if(crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}}catch(e){}let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16)}
-function getGithubToken(){try{return sessionStorage.getItem(GH_TOKEN_KEY)||''}catch(e){return ''}}
-function setGithubToken(token){try{sessionStorage.setItem(GH_TOKEN_KEY,String(token||'').trim())}catch(e){}}
-function clearGithubToken(){try{sessionStorage.removeItem(GH_TOKEN_KEY)}catch(e){}}
+function getGithubToken(){
+  try{
+    const persistent=localStorage.getItem(GH_TOKEN_KEY)||'';
+    if(persistent)return persistent;
+    const legacy=sessionStorage.getItem(GH_TOKEN_KEY)||'';
+    if(legacy){
+      localStorage.setItem(GH_TOKEN_KEY,legacy);
+      sessionStorage.removeItem(GH_TOKEN_KEY);
+      return legacy;
+    }
+    return '';
+  }catch(e){return ''}
+}
+function setGithubToken(token){
+  try{
+    localStorage.setItem(GH_TOKEN_KEY,String(token||'').trim());
+    sessionStorage.removeItem(GH_TOKEN_KEY);
+  }catch(e){}
+}
+function clearGithubToken(){
+  try{localStorage.removeItem(GH_TOKEN_KEY)}catch(e){}
+  try{sessionStorage.removeItem(GH_TOKEN_KEY)}catch(e){}
+}
 function setGithubStatus(msg='',ok=false){githubStatus.textContent=msg;githubStatus.classList.toggle('ok',!!ok)}
 function openGithubModal(message=''){setGithubStatus(message,false);githubToken.value=getGithubToken();githubModal.classList.add('show');setTimeout(()=>githubToken.focus(),80)}
 function closeGithubModal(){githubModal.classList.remove('show');githubToken.value='';setGithubStatus('')}
@@ -231,8 +251,24 @@ async function publishToGithub(token){
   token=String(token||'').trim();
   if(!token){openGithubModal('Inserisci il token GitHub.');return}
   if(!pages){showToast('Regolamento non ancora caricato');return}
-  if(pageDirty){requestNavigation(()=>publishToGithub(token));return}
-  if(!globalDirty){showToast('Nessuna modifica da pubblicare',true);setStatus('Il regolamento pubblicato è già allineato con la bozza.');return}
+
+  // Se l'utente sta ancora scrivendo, Pubblica acquisisce automaticamente
+  // il contenuto corrente prima di controllare cosa è cambiato.
+  if(pageDirty)commitCurrent();
+
+  let updated;
+  try{updated=buildUpdatedHtml()}catch(e){showToast(e.message);return}
+  const updatedHash=await hashText(updated);
+
+  // Non ci affidiamo più al solo flag globalDirty: confrontiamo davvero
+  // l'HTML generato con la versione online caricata.
+  if(updatedHash===baseHash){
+    showToast('Nessuna modifica da pubblicare',true);
+    setStatus('Il regolamento pubblicato è già allineato con la bozza.');
+    return;
+  }
+
+  globalDirty=true;
   publishBtn.disabled=true;githubConnectPublish.disabled=true;setStatus('Controllo della versione GitHub…');setGithubStatus('Verifica accesso e versione…');
   try{
     const endpoint=`https://api.github.com/repos/${encodeURIComponent(GH_OWNER)}/${encodeURIComponent(GH_REPO)}/contents/${GH_PATH}`;
@@ -245,7 +281,6 @@ async function publishToGithub(token){
     const remoteText=base64ToUtf8(remote.content||'');
     const remoteHash=await hashText(remoteText);
     if(remoteHash!==baseHash){throw new Error('REMOTE_CHANGED')}
-    const updated=buildUpdatedHtml();
     setStatus('Pubblicazione su GitHub…');setGithubStatus('Invio del nuovo regolamento…');
     const body={message:'Aggiorna regolamento via Editor Staff',content:utf8ToBase64(updated),sha:remote.sha,branch:GH_BRANCH};
     const putResp=await githubRequest(endpoint,token,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -255,7 +290,7 @@ async function publishToGithub(token){
     if(!putResp.ok){let detail='';try{const j=await putResp.json();detail=j&&j.message?': '+j.message:''}catch(e){}throw new Error('GitHub PUT '+putResp.status+detail)}
     const result=await putResp.json();
     setGithubToken(token);
-    originalText=updated;baseHash=await hashText(updated);sourceLabel=`GitHub · ${GH_BRANCH}`;globalDirty=false;
+    originalText=updated;baseHash=updatedHash;sourceLabel=`GitHub · ${GH_BRANCH}`;globalDirty=false;
     await idbDelete();availableDraft=null;draftBox.classList.remove('show');
     const shortSha=result&&result.commit&&result.commit.sha?String(result.commit.sha).slice(0,7):'';
     setStatus(`✓ Pubblicato su GitHub${shortSha?' · commit '+shortSha:''}. GitHub Pages si aggiornerà a breve.`);
@@ -264,7 +299,7 @@ async function publishToGithub(token){
   }catch(e){
     console.error('Pubblicazione GitHub:',e);
     const code=e&&e.message?e.message:String(e);
-    if(code==='TOKEN_INVALID'){openGithubModal('Token non valido o scaduto. Creane/inseriscine uno valido.');setStatus('Pubblicazione non riuscita: token GitHub non valido.');}
+    if(code==='TOKEN_INVALID'){openGithubModal('Token non valido o revocato. Inseriscine uno valido.');setStatus('Pubblicazione non riuscita: token GitHub non valido.');}
     else if(code==='TOKEN_FORBIDDEN'){openGithubModal('Il token non ha il permesso Contents: Read and write sul repository regolamento.');setStatus('Pubblicazione non riuscita: permessi GitHub insufficienti.');}
     else if(code==='REPO_NOT_FOUND'){openGithubModal('Repository o file non raggiungibile con questo token. Controlla che il token abbia accesso a regolamento.');setStatus('Pubblicazione non riuscita: repository non raggiungibile.');}
     else if(code==='REMOTE_CHANGED'){setGithubStatus('');setStatus('GitHub contiene una versione più recente: pubblicazione bloccata per evitare di sovrascriverla. Premi Aggiorna e riapplica le modifiche necessarie.');showToast('Versione GitHub cambiata: pubblicazione bloccata');}
@@ -314,7 +349,32 @@ async function checkDraft(){availableDraft=await idbGet();draftBox.classList.tog
 async function restoreDraft(){if(!availableDraft)return;if(availableDraft.baseHash!==baseHash&&!confirm('La bozza deriva da una versione diversa del regolamento online. Ripristinarla comunque?'))return;originalText=availableDraft.originalText;pages=structuredClone(availableDraft.pages);baseHash=availableDraft.baseHash;sourceLabel=availableDraft.sourceLabel+' · bozza';globalDirty=true;activateLoaded();showToast('Bozza ripristinata',true)}
 async function discardDraft(){await idbDelete();availableDraft=null;draftBox.classList.remove('show');showToast('Bozza eliminata')}
 function activateLoaded(){sourceUrl.textContent=sourceLabel;const first=pages.magizoologia?'magizoologia':Object.keys(pages)[0];if(first)loadPage(first)}
-async function acceptSource(text,label){const parsed=parseRegulation(text);originalText=text;sourceLabel=label;baseHash=await hashText(text);pages=parsed.pages;currentSlug=null;globalDirty=false;editing=false;previewPatches={};try{localStorage.removeItem(PREVIEW_KEY)}catch(e){}activateLoaded();setConn('ok','Collegato');setStatus(`${Object.keys(pages).length} pagine riconosciute · regolamento caricato da GitHub Pages.`);await checkDraft()}
+async function acceptSource(text,label){
+  const parsed=parseRegulation(text);
+  originalText=text;sourceLabel=label;baseHash=await hashText(text);pages=parsed.pages;
+  currentSlug=null;globalDirty=false;editing=false;previewPatches={};
+  try{localStorage.removeItem(PREVIEW_KEY)}catch(e){}
+  await checkDraft();
+
+  // Una bozza salvata sulla stessa versione online viene ripristinata
+  // automaticamente: così un refresh non fa "sparire" le modifiche da Pubblica.
+  if(availableDraft&&availableDraft.baseHash===baseHash&&availableDraft.pages){
+    pages=structuredClone(availableDraft.pages);
+    const draftHtml=buildUpdatedHtml();
+    globalDirty=(await hashText(draftHtml))!==baseHash;
+    sourceLabel=label+' · bozza locale';
+    activateLoaded();
+    setConn('ok','Collegato');
+    setStatus(globalDirty
+      ? 'Bozza locale ripristinata automaticamente · ci sono modifiche da pubblicare.'
+      : `${Object.keys(pages).length} pagine riconosciute · regolamento caricato da GitHub Pages.`);
+    return;
+  }
+
+  activateLoaded();
+  setConn('ok','Collegato');
+  setStatus(`${Object.keys(pages).length} pagine riconosciute · regolamento caricato da GitHub Pages.`);
+}
 async function loadOnline(){setConn('warn','Connessione…');setStatus('Caricamento del regolamento pubblicato…');try{const u=new URL(REGULATION_URL);u.searchParams.set('_editor',Date.now());const r=await fetch(u.toString(),{cache:'no-store'});if(!r.ok)throw new Error(`Errore HTTP ${r.status}`);await acceptSource(await r.text(),REGULATION_URL)}catch(e){setConn('warn','Non collegato');setStatus(e.message);emptyState.style.display='block';pageCard.classList.remove('ready');sidebarNav.innerHTML='<div class="side-status">Regolamento non disponibile.</div>';showToast('Caricamento online non riuscito')}}
 sidebarBack.addEventListener('click',zoomOut);sidebarForward.addEventListener('click',zoomIn);
 sidebarNav.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.sideAnchor){const target=(editing?visualEditor:reader).querySelector('#'+CSS.escape(b.dataset.sideAnchor));target?.scrollIntoView({behavior:'smooth',block:'start'});return}if(b.dataset.sideLevel&&b.dataset.sidePage){const level=b.dataset.sideLevel,slug=b.dataset.sidePage;requestNavigation(()=>{enterLevel(level);loadPage(slug)});return}if(b.dataset.sideLevel){enterLevel(b.dataset.sideLevel);return}if(b.dataset.sidePage)navigateTo(b.dataset.sidePage)});
@@ -344,7 +404,7 @@ function openConnectedPreview(){if(pageDirty){requestNavigation(openConnectedPre
 previewBtn.addEventListener('click',openConnectedPreview);
 publishBtn.addEventListener('click',()=>{if(pageDirty){requestNavigation(()=>publishBtn.click());return}const token=getGithubToken();if(!token){openGithubModal();return}publishToGithub(token)});
 githubCancel.addEventListener('click',closeGithubModal);githubModal.addEventListener('click',e=>{if(e.target===githubModal)closeGithubModal()});githubToken.addEventListener('keydown',e=>{if(e.key==='Enter')githubConnectPublish.click()});githubConnectPublish.addEventListener('click',()=>{const token=githubToken.value.trim();if(!token){setGithubStatus('Inserisci il token GitHub.');return}setGithubToken(token);publishToGithub(token)});
-window.addEventListener('felix-staff-access',e=>{if(!e.detail||!e.detail.unlocked){clearGithubToken();closeGithubModal()}});
+window.addEventListener('felix-staff-access',e=>{if(!e.detail||!e.detail.unlocked){closeGithubModal()}});
 window.addEventListener('beforeunload',e=>{if(globalDirty||pageDirty){e.preventDefault();e.returnValue=''}});sourceUrl.textContent=REGULATION_URL;loadOnline();
 })();
 </script>
