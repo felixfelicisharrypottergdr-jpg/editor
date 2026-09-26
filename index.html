@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Editor Staff v4 · Felix Felicis GdR</title>
+<title>Editor Staff v5 · Felix Felicis GdR</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Labrada:wght@400;500;700&display=swap');
 @font-face{font-family:'Federo';font-style:normal;font-weight:400;font-display:swap;src:url('https://fonts.gstatic.com/s/federo/v17/iJWFBX-cbD_ETsbWilmf.woff2') format('woff2')}
@@ -55,14 +55,45 @@
 .visual-editor blockquote{border-left:4px solid var(--sap-l);background:color-mix(in srgb,var(--sap-p) 20%,transparent);padding:.7rem 1rem;margin:1rem 0}.visual-editor pre{white-space:pre-wrap;background:#f1ede6;border:1px solid #d9cdbd;border-radius:8px;padding:10px;font-family:Courier,monospace}.visual-editor details{border:1px solid #dac9ae;border-radius:8px;background:#fffaf2;padding:8px 10px;margin:10px 0}.visual-editor summary{cursor:pointer;font-weight:700;color:var(--sap-a)}.visual-editor .dice-ref{display:inline-block;padding:.05rem .35rem;border:1px solid currentColor;border-radius:999px;font-family:'Federo',serif;font-size:.9em}.visual-editor .tag-ref{font-weight:700;color:var(--sap-a)}
 .preview-note{display:none;align-items:center;gap:7px;padding:7px 10px;border:1px solid #d4b26d;border-radius:8px;background:#fff8e8;color:#7a5c24;font-size:.72rem}.preview-note.show{display:flex}.preview-note b{color:#5f471c}
 
+
+/* Accesso Staff — stesso modello del Gestore Staff Token */
+.staff-gate{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 15%,#fffdf8 0,#f3eadf 42%,#e7dccd 100%)}
+.staff-gate.hidden{display:none}
+.staff-gate-card{width:min(520px,calc(100vw - 34px));background:#fffdf9;border:1px solid #d7c4a9;border-radius:18px;box-shadow:0 28px 80px rgba(66,48,29,.18);overflow:hidden}
+.staff-gate-head{padding:24px 26px 18px;background:linear-gradient(180deg,#f7efe3,#efe2d0);border-bottom:1px solid #deceb8;text-align:center}
+.staff-gate-icon{width:54px;height:54px;margin:0 auto 10px;border-radius:50%;display:grid;place-items:center;background:#6d522b;color:#fff;font-size:1.45rem;box-shadow:0 6px 18px rgba(109,82,43,.2)}
+.staff-gate-head h1{margin:0;font:400 2rem/1.05 'magic','Federo',serif;color:#5d4435}.staff-gate-head p{margin:.55rem auto 0;max-width:38ch;color:#82725f;font-size:.84rem;line-height:1.45}
+.staff-gate-body{padding:22px 26px 26px}.staff-gate-body label{display:block;margin:0 0 6px;color:#6e5c48;font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.staff-gate-row{display:flex;gap:8px}.staff-gate-row input{min-width:0;flex:1;border:1px solid #cdb99d;border-radius:9px;background:#fff;padding:11px 12px;color:#342b24;outline:none}.staff-gate-row input:focus{border-color:#a77d3d;box-shadow:0 0 0 3px rgba(183,137,56,.1)}
+.staff-gate-row button{border:1px solid #6d522b;border-radius:9px;background:#6d522b;color:#fff;padding:10px 15px;font-weight:700}.staff-gate-row button:disabled{opacity:.55;cursor:wait}
+.staff-gate-status{min-height:1.35em;margin-top:9px;color:#9a4f47;font-size:.76rem;line-height:1.4}.staff-gate-status.ok{color:#397047}.staff-gate-note{margin:16px 0 0;padding:10px 11px;border-left:3px solid #c99a53;background:#fff8e9;color:#7d6a52;font-size:.72rem;line-height:1.45}
+.staff-session{display:none;align-items:center;gap:6px}.staff-session.show{display:flex}.staff-session .pill{border-color:#b9d0bd;background:#f3faf4;color:#397047}.staff-session .btn{padding:6px 9px;font-size:.72rem}
+body.staff-locked .topbar,body.staff-locked .workspace,body.staff-locked .toast,body.staff-locked .modal-backdrop{visibility:hidden}
+
 @media(max-width:980px){:root{--top:118px}.topbar{flex-wrap:wrap}.brand{min-width:0}.connection{order:3;flex-basis:100%}.workspace{display:block}.sidebar{position:relative;top:auto;height:auto;max-height:390px}.main{padding:12px}.editor-fields{grid-template-columns:1fr}.field.full{grid-column:auto}.page-header{align-items:flex-start;flex-direction:column}.reader,.visual-editor{padding:22px 20px}}
 </style>
 </head>
-<body>
+<body class="staff-locked">
+<div class="staff-gate" id="staffGate" role="dialog" aria-modal="true" aria-labelledby="staffGateTitle">
+  <div class="staff-gate-card">
+    <div class="staff-gate-head">
+      <div class="staff-gate-icon">🔑</div>
+      <h1 id="staffGateTitle">Editor del Regolamento</h1>
+      <p>Area riservata allo Staff di Felix Felicis. Usa la stessa Password Staff del Gestore Staff Token.</p>
+    </div>
+    <div class="staff-gate-body">
+      <label for="staffPassword">Password Staff</label>
+      <div class="staff-gate-row"><input type="password" id="staffPassword" autocomplete="current-password" placeholder="Inserisci la Password Staff"><button type="button" id="staffUnlock">Accedi</button></div>
+      <div class="staff-gate-status" id="staffGateStatus" aria-live="polite">Preparazione accesso sicuro…</div>
+      <div class="staff-gate-note">La password non viene salvata nell’editor. Dopo la verifica viene rimossa dalla sessione Firebase; l’accesso locale resta valido fino a 12 ore o finché non premi Esci.</div>
+    </div>
+  </div>
+</div>
 <header class="topbar">
-  <div class="brand"><b>Editor Staff · Felix Felicis</b><small>Modifica il regolamento senza entrare nel codice</small></div>
+  <div class="brand"><b>Editor Staff · Felix Felicis</b><small>Area riservata · modifica il regolamento senza entrare nel codice</small></div>
   <div class="connection"><span class="pill" id="connPill">● Connessione</span><span id="status">Connessione al regolamento…</span></div>
   <div class="top-actions">
+    <div class="staff-session" id="staffSession"><span class="pill">✓ Staff</span><button class="btn ghost" id="staffLogout" type="button">Esci</button></div>
     <button class="btn" id="previewBtn" title="Apri il regolamento in modalità anteprima Staff">Vedi nel regolamento ↗</button>
     <button class="btn success" id="publishBtn" title="Pubblica le modifiche nel regolamento online">Pubblica</button>
   </div>
@@ -245,5 +276,36 @@ publishBtn.addEventListener('click',()=>{if(pageDirty){requestNavigation(()=>pub
 window.addEventListener('beforeunload',e=>{if(globalDirty||pageDirty){e.preventDefault();e.returnValue=''}});sourceUrl.textContent=REGULATION_URL;loadOnline();
 })();
 </script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getAuth, setPersistence, browserSessionPersistence, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, updateDoc, deleteDoc, deleteField, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCvd56bSEL02s2OY2PSk7uyFX-CYRB4Vz0",
+  authDomain:"conteggi-eee1b.firebaseapp.com",
+  projectId:"conteggi-eee1b",
+  storageBucket:"conteggi-eee1b.firebasestorage.app",
+  messagingSenderId:"481320219586",
+  appId:"1:481320219586:web:87e974d618a302adfadc5b"
+};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app),db=getFirestore(app);
+const gate=document.getElementById('staffGate'),pwInput=document.getElementById('staffPassword'),unlockBtn=document.getElementById('staffUnlock'),gateStatus=document.getElementById('staffGateStatus'),sessionUi=document.getElementById('staffSession'),logoutBtn=document.getElementById('staffLogout');
+const ACCESS_KEY='ff_regolamento_staff_access_v1',TWELVE_HOURS=12*60*60*1000;
+let authReady=false;
+function savedAccess(){try{const x=JSON.parse(sessionStorage.getItem(ACCESS_KEY)||'null');return x&&Number(x.until)>Date.now()?x:null}catch(e){return null}}
+function unlockUi(until){document.body.classList.remove('staff-locked');gate.classList.add('hidden');sessionUi.classList.add('show');try{sessionStorage.setItem(ACCESS_KEY,JSON.stringify({until}))}catch(e){};window.dispatchEvent(new CustomEvent('felix-staff-access',{detail:{unlocked:true,until}}))}
+function lockUi(message=''){document.body.classList.add('staff-locked');gate.classList.remove('hidden');sessionUi.classList.remove('show');try{sessionStorage.removeItem(ACCESS_KEY)}catch(e){};if(message)gateStatus.textContent=message;pwInput.value='';setTimeout(()=>pwInput.focus(),80);window.dispatchEvent(new CustomEvent('felix-staff-access',{detail:{unlocked:false}}))}
+function setGate(message,ok=false){gateStatus.textContent=message;gateStatus.classList.toggle('ok',!!ok)}
+async function ensureAuth(){if(authReady&&auth.currentUser)return auth.currentUser;await setPersistence(auth,browserSessionPersistence);if(!auth.currentUser)await signInAnonymously(auth);return await new Promise((resolve,reject)=>{let done=false;const stop=onAuthStateChanged(auth,u=>{if(done)return;if(u){done=true;authReady=true;stop();resolve(u)}},reject);setTimeout(()=>{if(!done){done=true;stop();reject(new Error('Autenticazione Firebase non disponibile.'))}},9000)})}
+async function verifyStaffPassword(){const pw=pwInput.value;if(!pw){setGate('Inserisci la Password Staff.');return}unlockBtn.disabled=true;setGate('Verifica in corso…');try{const user=await ensureAuth();const ref=doc(db,'staff_edit_sessions',user.uid);await setDoc(ref,{uid:user.uid,proof:pw,createdAt:serverTimestamp()});await updateDoc(ref,{proof:deleteField()});pwInput.value='';const until=Date.now()+TWELVE_HOURS;setGate('Accesso Staff riuscito.',true);unlockUi(until)}catch(e){console.error('Accesso Staff:',e);setGate(e&&e.code==='permission-denied'?'Password Staff non valida.':'Accesso Staff non riuscito. Controlla la connessione e riprova.');try{const u=auth.currentUser;if(u)await deleteDoc(doc(db,'staff_edit_sessions',u.uid))}catch(_e){}}finally{unlockBtn.disabled=false}}
+async function logoutStaff(){try{const u=auth.currentUser;if(u)await deleteDoc(doc(db,'staff_edit_sessions',u.uid))}catch(e){console.warn('Chiusura sessione Staff:',e)}lockUi('Sessione chiusa. Inserisci la Password Staff per rientrare.')}
+unlockBtn.addEventListener('click',verifyStaffPassword);pwInput.addEventListener('keydown',e=>{if(e.key==='Enter')verifyStaffPassword()});logoutBtn.addEventListener('click',logoutStaff);
+try{await ensureAuth();const access=savedAccess();if(access){unlockUi(access.until);setGate('Sessione Staff attiva.',true)}else{lockUi('Inserisci la Password Staff per accedere.')}}catch(e){console.error(e);lockUi('Firebase Authentication non disponibile. Riprova tra poco.')}
+setInterval(()=>{const access=savedAccess();if(!document.body.classList.contains('staff-locked')&&(!access||access.until<=Date.now()))logoutStaff()},60000);
+</script>
+
 </body>
 </html>
