@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="it">
 <head>
@@ -5,55 +6,44 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Editor Staff · Felix Felicis GdR</title>
 <style>
-:root{
-  --bg:#11100f;--panel:#1b1815;--panel2:#24201c;--line:#5f4d32;--gold:#d3a05b;--gold2:#f0c45a;
-  --paper:#f3ead9;--ink:#2b221b;--muted:#9d8e7b;--ok:#7fad78;--danger:#bf665f;
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:#eee;font-family:Arial,Helvetica,sans-serif}
-body{min-height:100vh}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;min-height:58px;padding:10px 14px;background:linear-gradient(#2a211a,#171411);border-bottom:1px solid #70572f;box-shadow:0 5px 20px rgba(0,0,0,.35)}
-.brand{min-width:230px}.brand b{display:block;color:var(--gold2);font-family:Georgia,serif;font-size:20px;font-weight:400}.brand small{color:#a99b88}
-.filelabel{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #8b6a36;background:#30271f;color:#f2dfba;border-radius:7px}.filelabel input{display:none}
-.status{min-width:0;flex:1;color:#c5b8a6;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbtn{padding:9px 13px;border-radius:7px;border:1px solid #8b6a36;background:#2a2119;color:#f3dfb7}.topbtn:disabled{opacity:.35;cursor:not-allowed}.topbtn.primary{background:#6a4a1b;color:#fff3d5;border-color:#c79a42}
-.workspace{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:calc(100vh - 58px)}
-.sidebar{border-right:1px solid #54442e;background:#151311;min-width:0}.sidehead{position:sticky;top:58px;z-index:10;padding:12px;background:#1d1916;border-bottom:1px solid #4d3d29}.sidehead input{width:100%;padding:9px 10px;border:1px solid #5d4b33;border-radius:6px;background:#0f0e0d;color:#eee;outline:none}.sidehead input:focus{border-color:var(--gold)}
-.stats{margin-top:8px;color:#8f826f;font-size:12px}.pagelist{padding:8px;max-height:calc(100vh - 147px);overflow:auto}.pageitem{display:block;width:100%;text-align:left;border:0;border-left:3px solid transparent;background:transparent;color:#ddd;padding:9px 9px 8px;margin:1px 0;border-radius:0 6px 6px 0}.pageitem:hover{background:#211d19}.pageitem.active{border-left-color:var(--gold2);background:#2b241d;color:#fff4d9}.pageitem b{display:block;font-size:13px;line-height:1.25}.pageitem small{display:block;margin-top:3px;color:#8f816e;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.main{min-width:0;background:#201b17;padding:16px}.empty{max-width:700px;margin:12vh auto;padding:32px;border:1px dashed #6d5838;border-radius:12px;background:#171411;text-align:center;color:#b9aa96}.empty h1{font-family:Georgia,serif;color:var(--gold2);font-weight:400}
-.editor{display:none;max-width:1220px;margin:0 auto}.editor.ready{display:block}.panel{background:#171411;border:1px solid #51412c;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18)}
-.panelhead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;background:#251f1a;border-bottom:1px solid #51412c}.panelhead h2{margin:0;font:400 21px/1.1 Georgia,serif;color:#f0c45a}.slug{color:#8e806d;font:12px monospace}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}.field.full{grid-column:1/-1}.field label{display:block;margin:0 0 5px;color:#bba98f;font-size:12px;text-transform:uppercase;letter-spacing:.06em}.field input,.field textarea,.field select{width:100%;border:1px solid #5b4931;border-radius:6px;background:#100f0e;color:#f1eee9;padding:9px 10px;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}.field textarea{min-height:66px;resize:vertical}.help{margin-top:5px;color:#817562;font-size:11px}
-.contentpanel{margin-top:14px}.toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:9px 10px;background:#211c18;border-bottom:1px solid #51412c}.toolbar button,.tabs button{border:1px solid #5e4b31;background:#161412;color:#e7dccb;border-radius:5px;padding:6px 9px}.toolbar button:hover,.tabs button:hover{border-color:#a77e3a;color:#ffe2a1}.tabs{display:flex;gap:6px}.tabs button.active{background:#6a4a1b;border-color:#c79a42;color:white}
-.editarea{padding:0}.visual{min-height:420px;max-height:62vh;overflow:auto;background:var(--paper);color:var(--ink);padding:28px 34px;outline:none;font-family:Georgia,serif;line-height:1.6}.visual:focus{box-shadow:inset 0 0 0 2px rgba(211,160,91,.35)}.visual h1,.visual h2,.visual h3{font-family:Georgia,serif;color:#5b3e20}.visual h2{border-bottom:1px solid #c9ab7c;padding-bottom:.18em}.visual blockquote{margin:1em 0;padding:.7em 1em;border-left:4px solid #a67c36;background:#f8f1e6}.visual button,.visual a{pointer-events:none}.source{display:none;width:100%;min-height:420px;max-height:62vh;resize:vertical;border:0;background:#0c0c0c;color:#e6dccd;padding:18px;font:13px/1.5 Consolas,monospace;outline:none}.source.show{display:block}.visual.hide{display:none}
-.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:11px 12px;background:#1d1916;border-top:1px solid #51412c}.actions button{padding:8px 11px;border-radius:6px;border:1px solid #6a5537;background:#29231d;color:#eee}.actions button.primary{background:#69491b;border-color:#c09242;color:#fff0cc}.actions button.danger{border-color:#7a423f;color:#e5aaa5}.savehint{margin-left:auto;color:#8d816f;font-size:12px}.savehint.dirty{color:#f0c45a}
-.previewpanel{display:none;margin-top:14px}.previewpanel.show{display:block}.preview{background:#f3ead9;color:#2d241d;border-radius:8px;padding:24px 30px;min-height:180px;font-family:Georgia,serif;line-height:1.6}.preview h1{margin-top:0;color:#4b351e;font-size:32px}.preview .subtitle{margin-top:-18px;margin-bottom:25px;color:#806d57}.preview h2,.preview h3{color:#5c4021}.preview h2{border-bottom:1px solid #cdb28a}.preview blockquote{border-left:4px solid #a77e3a;background:#faf5ec;margin:1em 0;padding:.65em 1em}
-.notice{margin:14px 0 0;padding:10px 12px;border:1px solid #5f4d32;border-radius:7px;background:#171411;color:#ad9f8d;font-size:12px}.notice strong{color:#e2bd73}
-.toast{position:fixed;right:18px;bottom:18px;z-index:100;background:#2b241d;border:1px solid #a77d38;color:#f7e4bc;padding:10px 14px;border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);pointer-events:none;transition:.18s}.toast.show{opacity:1;transform:none}
-@media(max-width:850px){.workspace{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #54442e}.sidehead{position:static}.pagelist{max-height:240px}.main{padding:10px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.topbar{flex-wrap:wrap}.brand{min-width:0}.status{order:3;flex-basis:100%}}
+:root{--bg:#11100f;--panel:#1b1815;--panel2:#24201c;--line:#5f4d32;--gold:#d3a05b;--gold2:#f0c45a;--paper:#f3ead9;--ink:#2b221b;--muted:#9d8e7b;--ok:#7fad78;--danger:#bf665f;--blue:#7ca2c8}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:#eee;font-family:Arial,Helvetica,sans-serif}body{min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;min-height:62px;padding:9px 13px;background:linear-gradient(#2a211a,#171411);border-bottom:1px solid #70572f;box-shadow:0 5px 20px rgba(0,0,0,.35)}
+.brand{min-width:235px}.brand b{display:block;color:var(--gold2);font-family:Georgia,serif;font-size:20px;font-weight:400}.brand small{color:#a99b88}.status{min-width:0;flex:1;color:#c5b8a6;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid #5b4a33;border-radius:999px;color:#bcae9a;font-size:11px;background:#171411}.pill.ok{border-color:#506b4c;color:#a9d0a4}.pill.warn{border-color:#765b2e;color:#e0bd72}
+.topbtn,.filelabel{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border-radius:7px;border:1px solid #8b6a36;background:#2a2119;color:#f3dfb7;text-decoration:none}.topbtn:hover,.filelabel:hover{border-color:#bd8d40}.topbtn:disabled{opacity:.35;cursor:not-allowed}.topbtn.primary{background:#6a4a1b;color:#fff3d5;border-color:#c79a42}.topbtn.ok{background:#31502d;border-color:#64815f;color:#e9ffe6}.filelabel input{display:none}
+.workspace{display:grid;grid-template-columns:310px minmax(0,1fr);min-height:calc(100vh - 104px)}.sidebar{border-right:1px solid #54442e;background:#151311;min-width:0}.sidehead{position:sticky;top:104px;z-index:10;padding:11px;background:#1d1916;border-bottom:1px solid #4d3d29}.sidehead input{width:100%;padding:9px 10px;border:1px solid #5d4b33;border-radius:6px;background:#0f0e0d;color:#eee;outline:none}.sidehead input:focus{border-color:var(--gold)}.stats{margin-top:7px;color:#8f826f;font-size:12px}.pagelist{padding:8px;max-height:calc(100vh - 193px);overflow:auto}.group{margin:4px 0 10px}.grouptitle{padding:7px 8px 5px;color:#a99068;font-size:10px;letter-spacing:.09em;text-transform:uppercase;border-bottom:1px solid #332b22}.pageitem{display:block;width:100%;text-align:left;border:0;border-left:3px solid transparent;background:transparent;color:#ddd;padding:8px 9px 7px;margin:1px 0;border-radius:0 6px 6px 0}.pageitem:hover{background:#211d19}.pageitem.active{border-left-color:var(--gold2);background:#2b241d;color:#fff4d9}.pageitem b{display:block;font-size:13px;line-height:1.25}.pageitem small{display:block;margin-top:3px;color:#8f816e;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.main{min-width:0;background:#201b17;padding:16px}.empty{max-width:760px;margin:9vh auto;padding:30px;border:1px dashed #6d5838;border-radius:12px;background:#171411;text-align:center;color:#b9aa96}.empty h1{font-family:Georgia,serif;color:var(--gold2);font-weight:400}.empty .steps{margin:22px auto 0;max-width:560px;text-align:left;line-height:1.65}.editor{display:none;max-width:1230px;margin:0 auto}.editor.ready{display:block}.panel{background:#171411;border:1px solid #51412c;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18)}.panelhead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;background:#251f1a;border-bottom:1px solid #51412c}.panelhead h2{margin:0;font:400 21px/1.1 Georgia,serif;color:#f0c45a}.slug{color:#8e806d;font:12px monospace}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}.field.full{grid-column:1/-1}.field label{display:block;margin:0 0 5px;color:#bba98f;font-size:12px;text-transform:uppercase;letter-spacing:.06em}.field input,.field textarea,.field select{width:100%;border:1px solid #5b4931;border-radius:6px;background:#100f0e;color:#f1eee9;padding:9px 10px;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}.field textarea{min-height:66px;resize:vertical}.help{margin-top:5px;color:#817562;font-size:11px}.contentpanel{margin-top:14px}.toolbar{display:flex;flex-wrap:wrap;gap:6px;padding:9px 10px;background:#211c18;border-bottom:1px solid #51412c}.toolbar button,.tabs button{border:1px solid #5e4b31;background:#161412;color:#e7dccb;border-radius:5px;padding:6px 9px}.toolbar button:hover,.tabs button:hover{border-color:#a77e3a;color:#ffe2a1}.tabs{display:flex;gap:6px}.tabs button.active{background:#6a4a1b;border-color:#c79a42;color:white}.editarea{padding:0}.visual{min-height:420px;max-height:62vh;overflow:auto;background:var(--paper);color:var(--ink);padding:28px 34px;outline:none;font-family:Georgia,serif;line-height:1.6}.visual:focus{box-shadow:inset 0 0 0 2px rgba(211,160,91,.35)}.visual h1,.visual h2,.visual h3{font-family:Georgia,serif;color:#5b3e20}.visual h2{border-bottom:1px solid #c9ab7c;padding-bottom:.18em}.visual blockquote{margin:1em 0;padding:.7em 1em;border-left:4px solid #a67c36;background:#f8f1e6}.visual button,.visual a{pointer-events:none}.source{display:none;width:100%;min-height:420px;max-height:62vh;resize:vertical;border:0;background:#0c0c0c;color:#e6dccd;padding:18px;font:13px/1.5 Consolas,monospace;outline:none}.source.show{display:block}.visual.hide{display:none}.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:11px 12px;background:#1d1916;border-top:1px solid #51412c}.actions button{padding:8px 11px;border-radius:6px;border:1px solid #6a5537;background:#29231d;color:#eee}.actions button.primary{background:#69491b;border-color:#c09242;color:#fff0cc}.actions button.danger{border-color:#7a423f;color:#e5aaa5}.savehint{margin-left:auto;color:#8d816f;font-size:12px}.savehint.dirty{color:#f0c45a}.previewpanel{display:none;margin-top:14px}.previewpanel.show{display:block}.preview{background:#f3ead9;color:#2d241d;border-radius:8px;padding:24px 30px;min-height:180px;font-family:Georgia,serif;line-height:1.6}.preview h1{margin-top:0;color:#4b351e;font-size:32px}.preview .subtitle{margin-top:-18px;margin-bottom:25px;color:#806d57}.preview h2,.preview h3{color:#5c4021}.preview h2{border-bottom:1px solid #cdb28a}.preview blockquote{border-left:4px solid #a77e3a;background:#faf5ec;margin:1em 0;padding:.65em 1em}.notice{margin:14px 0 0;padding:11px 12px;border:1px solid #5f4d32;border-radius:7px;background:#171411;color:#ad9f8d;font-size:12px;line-height:1.55}.notice strong{color:#e2bd73}.toast{position:fixed;right:18px;bottom:18px;z-index:100;background:#2b241d;border:1px solid #a77d38;color:#f7e4bc;padding:10px 14px;border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,.4);opacity:0;transform:translateY(8px);pointer-events:none;transition:.18s}.toast.show{opacity:1;transform:none}.sourcebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 13px}.sourcebar .sourceurl{min-width:0;flex:1;color:#9f927f;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.draftbox{display:none;margin-bottom:13px;padding:10px 12px;border:1px solid #765b2e;background:#211b14;border-radius:8px;color:#d8c5a4;font-size:12px}.draftbox.show{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.draftbox span{flex:1;min-width:220px}.draftbox button{border:1px solid #7d6236;background:#30271d;color:#f1dab0;border-radius:6px;padding:6px 9px}
+@media(max-width:980px){.topbar{flex-wrap:wrap}.brand{min-width:0}.status{order:3;flex-basis:100%}.workspace{grid-template-columns:1fr}.sidebar{border-right:0;border-bottom:1px solid #54442e}.sidehead{position:static}.pagelist{max-height:250px}.main{padding:10px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
 </style>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><b>Editor Staff · Felix Felicis</b><small>Alpha · modifica il regolamento senza aprire il codice</small></div>
-  <label class="filelabel">Apri regolamento<input id="fileInput" type="file" accept=".html,text/html"></label>
-  <div class="status" id="status">Apri la v13 del regolamento per iniziare.</div>
+  <div class="brand"><b>Editor Staff · Felix Felicis</b><small>Beta · collegato al regolamento online</small></div>
+  <button class="topbtn" id="reloadBtn">↻ Ricarica online</button>
+  <label class="filelabel">Apri file locale<input id="fileInput" type="file" accept=".html,text/html"></label>
+  <button class="topbtn" id="draftBtn" disabled>Salva bozza</button>
   <button class="topbtn primary" id="exportBtn" disabled>Esporta index.html</button>
+  <button class="topbtn ok" id="publishBtn" title="Richiede il collegamento Firebase Auth + Function">Pubblica</button>
+</header>
+<header class="topbar" style="position:sticky;top:62px;min-height:42px;padding-top:5px;padding-bottom:5px;background:#151311;z-index:29">
+  <span class="pill" id="connPill">● Connessione</span>
+  <div class="status" id="status">Connessione al regolamento…</div>
 </header>
 <div class="workspace">
   <aside class="sidebar">
     <div class="sidehead">
       <input id="pageSearch" type="search" placeholder="Cerca pagina o sezione…" disabled>
-      <div class="stats" id="stats">Nessun regolamento caricato</div>
+      <div class="stats" id="stats">Caricamento…</div>
     </div>
     <div class="pagelist" id="pageList"></div>
   </aside>
   <main class="main">
+    <div class="sourcebar"><span class="pill ok">Regolamento</span><div class="sourceurl" id="sourceUrl"></div><a class="topbtn" href="https://felixfelicisharrypottergdr-jpg.github.io/regolamento/" target="_blank" rel="noopener">Apri sito ↗</a></div>
+    <div class="draftbox" id="draftBox"><span id="draftText">È disponibile una bozza locale.</span><button id="restoreDraftBtn">Ripristina bozza</button><button id="discardDraftBtn">Scarta</button></div>
     <section class="empty" id="emptyState">
-      <h1>Apri il regolamento</h1>
-      <p>Seleziona <b>regolamento_prototipo_v13_editabile.html</b>. L'editor leggerà solo il blocco dei contenuti e non toccherà grafica, ricerca, sidebar o JavaScript del sito.</p>
-      <p><small>Il file originale sul computer non viene modificato. Alla fine verrà creato un nuovo <b>index.html</b>.</small></p>
+      <h1>Collegamento automatico</h1>
+      <p>L'editor prova a leggere direttamente il regolamento pubblicato su GitHub Pages.</p>
+      <div class="steps"><b>Prima configurazione:</b><br>1. pubblica la <b>v14 collegabile</b> come <code>index.html</code> nel repository <b>regolamento</b>;<br>2. pubblica questo file come <code>index.html</code> nel repository <b>staffregolamento</b>;<br>3. da quel momento l'editor caricherà il regolamento da solo.</div>
     </section>
 
     <section class="editor" id="editor">
@@ -69,39 +59,16 @@ button{cursor:pointer}
       </div>
 
       <div class="panel contentpanel">
-        <div class="panelhead">
-          <h2>Contenuto</h2>
-          <div class="tabs"><button id="visualTab" class="active">Visuale</button><button id="sourceTab">HTML</button></div>
-        </div>
+        <div class="panelhead"><h2>Contenuto</h2><div class="tabs"><button id="visualTab" class="active">Visuale</button><button id="sourceTab">HTML</button></div></div>
         <div class="toolbar" id="toolbar">
-          <button data-cmd="bold"><b>B</b></button>
-          <button data-cmd="italic"><i>I</i></button>
-          <button data-block="p">Paragrafo</button>
-          <button data-block="h2">Titolo 2</button>
-          <button data-block="h3">Titolo 3</button>
-          <button data-block="blockquote">Riquadro</button>
-          <button data-cmd="insertUnorderedList">• Elenco</button>
-          <button data-cmd="insertOrderedList">1. Elenco</button>
-          <button id="linkBtn">Link</button>
+          <button data-cmd="bold"><b>B</b></button><button data-cmd="italic"><i>I</i></button><button data-block="p">Paragrafo</button><button data-block="h2">Titolo 2</button><button data-block="h3">Titolo 3</button><button data-block="blockquote">Riquadro</button><button data-cmd="insertUnorderedList">• Elenco</button><button data-cmd="insertOrderedList">1. Elenco</button><button id="linkBtn">Link</button>
         </div>
-        <div class="editarea">
-          <div id="visualEditor" class="visual" contenteditable="true"></div>
-          <textarea id="sourceEditor" class="source" spellcheck="false"></textarea>
-        </div>
-        <div class="actions">
-          <button class="primary" id="savePageBtn">Salva modifiche alla pagina</button>
-          <button id="previewBtn">Anteprima</button>
-          <button class="danger" id="resetPageBtn">Annulla modifiche pagina</button>
-          <span class="savehint" id="saveHint">Pagina invariata</span>
-        </div>
+        <div class="editarea"><div id="visualEditor" class="visual" contenteditable="true"></div><textarea id="sourceEditor" class="source" spellcheck="false"></textarea></div>
+        <div class="actions"><button class="primary" id="savePageBtn">Salva modifiche alla pagina</button><button id="previewBtn">Anteprima</button><button class="danger" id="resetPageBtn">Annulla modifiche pagina</button><span class="savehint" id="saveHint">Pagina invariata</span></div>
       </div>
 
-      <div class="panel previewpanel" id="previewPanel">
-        <div class="panelhead"><h2>Anteprima rapida</h2><button class="topbtn" id="closePreviewBtn">Chiudi</button></div>
-        <div class="preview" id="preview"></div>
-      </div>
-
-      <div class="notice"><strong>Alpha:</strong> questa versione modifica le pagine già esistenti. Creazione/eliminazione pagine, posizione nella sidebar e associazione ai tool verranno aggiunte dopo aver verificato che il ciclo “apri → modifica → esporta → riapri” è affidabile.</div>
+      <div class="panel previewpanel" id="previewPanel"><div class="panelhead"><h2>Anteprima rapida</h2><button class="topbtn" id="closePreviewBtn">Chiudi</button></div><div class="preview" id="preview"></div></div>
+      <div class="notice"><strong>Zero letture Firestore:</strong> il regolamento viene letto da GitHub Pages e le bozze vengono salvate in IndexedDB nel browser. Il futuro pulsante <b>Pubblica</b> userà Firebase Authentication + una Cloud Function soltanto come autorizzazione/ponte verso GitHub; non è necessario usare Firestore per questa funzione.</div>
     </section>
   </main>
 </div>
@@ -109,142 +76,67 @@ button{cursor:pointer}
 <script>
 (()=>{
 'use strict';
-const START='/* FELIX_CONTENT_START */';
-const END='/* FELIX_CONTENT_END */';
-const FORMAT='<!-- FELIX_EDITOR_FORMAT:1 -->';
+const REGULATION_URL='https://felixfelicisharrypottergdr-jpg.github.io/regolamento/';
+const START='/* FELIX_CONTENT_START */', END='/* FELIX_CONTENT_END */';
+const DB_NAME='felix_staff_regolamento', STORE='drafts', DRAFT_KEY='main';
 const $=s=>document.querySelector(s);
-const fileInput=$('#fileInput'), exportBtn=$('#exportBtn'), status=$('#status'), pageSearch=$('#pageSearch'), stats=$('#stats'), pageList=$('#pageList');
-const emptyState=$('#emptyState'), editor=$('#editor'), editHeading=$('#editHeading'), slugLabel=$('#slugLabel');
-const titleInput=$('#titleInput'), subtitleInput=$('#subtitleInput'), crumbInput=$('#crumbInput'), modeInput=$('#modeInput'), aliasInput=$('#aliasInput');
-const visualEditor=$('#visualEditor'), sourceEditor=$('#sourceEditor'), visualTab=$('#visualTab'), sourceTab=$('#sourceTab');
-const savePageBtn=$('#savePageBtn'), previewBtn=$('#previewBtn'), resetPageBtn=$('#resetPageBtn'), saveHint=$('#saveHint');
-const previewPanel=$('#previewPanel'), preview=$('#preview'), closePreviewBtn=$('#closePreviewBtn'), toast=$('#toast');
-let originalText='', originalFilename='', pages=null, currentSlug=null, sourceMode=false, pageDirty=false, globalDirty=false;
+const fileInput=$('#fileInput'), reloadBtn=$('#reloadBtn'), draftBtn=$('#draftBtn'), exportBtn=$('#exportBtn'), publishBtn=$('#publishBtn'), status=$('#status'), connPill=$('#connPill'), pageSearch=$('#pageSearch'), stats=$('#stats'), pageList=$('#pageList');
+const emptyState=$('#emptyState'), editor=$('#editor'), sourceUrl=$('#sourceUrl'), draftBox=$('#draftBox'), draftText=$('#draftText'), restoreDraftBtn=$('#restoreDraftBtn'), discardDraftBtn=$('#discardDraftBtn');
+const editHeading=$('#editHeading'), slugLabel=$('#slugLabel'), titleInput=$('#titleInput'), subtitleInput=$('#subtitleInput'), crumbInput=$('#crumbInput'), modeInput=$('#modeInput'), aliasInput=$('#aliasInput');
+const visualEditor=$('#visualEditor'), sourceEditor=$('#sourceEditor'), visualTab=$('#visualTab'), sourceTab=$('#sourceTab'), savePageBtn=$('#savePageBtn'), previewBtn=$('#previewBtn'), resetPageBtn=$('#resetPageBtn'), saveHint=$('#saveHint'), previewPanel=$('#previewPanel'), preview=$('#preview'), closePreviewBtn=$('#closePreviewBtn'), toast=$('#toast');
+let originalText='', sourceLabel='', baseHash='', pages=null, currentSlug=null, sourceMode=false, pageDirty=false, globalDirty=false, availableDraft=null;
 
-function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove('show'),2200)}
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>toast.classList.remove('show'),2400)}
 function setStatus(msg){status.textContent=msg}
+function setConn(type,text){connPill.className='pill '+(type||'');connPill.textContent='● '+text}
 function setDirty(v=true){pageDirty=v;saveHint.textContent=v?'Modifiche non ancora salvate':'Pagina salvata';saveHint.classList.toggle('dirty',v)}
-function humanTitle(p,slug){return (p&&p.title)||slug}
 function cleanTitle(s){return String(s||'').replace(/^\s*(?:Nuova\s+)?\d+(?:\.\d+)?\.\s*/,'')}
+function escapeHtml(s){return String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 function parseRegulation(text){
-  if(!text.includes(FORMAT)) throw new Error('Questo file non è nel formato editabile v13.');
-  const a=text.indexOf(START), b=text.indexOf(END,a+START.length);
-  if(a<0||b<0) throw new Error('Blocco dei contenuti non trovato.');
-  const block=text.slice(a+START.length,b);
-  const m=block.match(/const\s+PAGES\s*=\s*([\s\S]*?)\s*;\s*$/);
-  if(!m) throw new Error('Archivio PAGES non riconosciuto.');
-  let data;
-  try{data=JSON.parse(m[1])}catch(e){throw new Error('I contenuti non sono leggibili: '+e.message)}
-  return data;
+  const fmt=text.match(/<!--\s*FELIX_EDITOR_FORMAT:(\d+)\s*-->/i);if(!fmt)throw new Error('La versione online non è ancora predisposta per l’Editor Staff. Pubblica prima la v14 collegabile nel repository regolamento.');
+  const a=text.indexOf(START),b=text.indexOf(END,a+START.length);if(a<0||b<0)throw new Error('Blocco dei contenuti non trovato.');
+  const block=text.slice(a+START.length,b),m=block.match(/const\s+PAGES\s*=\s*([\s\S]*?)\s*;\s*$/);if(!m)throw new Error('Archivio PAGES non riconosciuto.');
+  try{return {pages:JSON.parse(m[1]),format:Number(fmt[1])}}catch(e){throw new Error('I contenuti non sono leggibili: '+e.message)}
+}
+async function hashText(text){
+  try{if(crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}}catch(e){}
+  let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(16)
 }
 function currentHtml(){return sourceMode?sourceEditor.value:visualEditor.innerHTML}
-function syncToVisual(){visualEditor.innerHTML=sourceEditor.value}
-function syncToSource(){sourceEditor.value=visualEditor.innerHTML}
-function commitCurrent(){
-  if(!pages||!currentSlug||!pageDirty) return;
-  const p=pages[currentSlug];
-  p.title=titleInput.value.trim();
-  p.subtitle=subtitleInput.value.trim();
-  p.crumb=crumbInput.value.split('>').map(x=>x.trim()).filter(Boolean);
-  p.mode=modeInput.value;
-  p.aliases=aliasInput.value.split(/\n+/).map(x=>x.trim()).filter(Boolean);
-  p.html=currentHtml();
-  globalDirty=true;
-  setDirty(false);
-  renderPageList();
-  setStatus(`Modifiche salvate in memoria · ${Object.keys(pages).length} pagine · esporta quando hai finito.`);
-}
-function loadPage(slug){
-  if(currentSlug&&pageDirty) commitCurrent();
-  currentSlug=slug;
-  const p=pages[slug]; if(!p)return;
-  editHeading.textContent=cleanTitle(humanTitle(p,slug));
-  slugLabel.textContent=slug;
-  titleInput.value=p.title||'';
-  subtitleInput.value=p.subtitle||'';
-  crumbInput.value=(p.crumb||[]).join(' > ');
-  modeInput.value=p.mode==='dark'?'dark':'paper';
-  aliasInput.value=(p.aliases||[]).join('\n');
-  visualEditor.innerHTML=p.html||'';
-  sourceEditor.value=p.html||'';
-  sourceMode=false;visualEditor.classList.remove('hide');sourceEditor.classList.remove('show');visualTab.classList.add('active');sourceTab.classList.remove('active');
-  previewPanel.classList.remove('show');
-  setDirty(false);renderPageList();
-}
-function renderPageList(){
-  if(!pages)return;
-  const q=pageSearch.value.trim().toLocaleLowerCase('it');
-  const rows=Object.entries(pages).filter(([slug,p])=>{
-    const hay=[slug,p.title,p.subtitle,...(p.crumb||[]),...(p.aliases||[])].join(' ').toLocaleLowerCase('it');return !q||hay.includes(q);
-  });
-  pageList.innerHTML='';
-  rows.forEach(([slug,p])=>{
-    const b=document.createElement('button');b.className='pageitem'+(slug===currentSlug?' active':'');b.type='button';
-    const path=(p.crumb||[]).join(' › ');
-    b.innerHTML=`<b>${escapeHtml(cleanTitle(humanTitle(p,slug)))}</b><small>${escapeHtml(path||slug)}</small>`;
-    b.addEventListener('click',()=>loadPage(slug));pageList.appendChild(b);
-  });
-  stats.textContent=`${rows.length} di ${Object.keys(pages).length} pagine`;
-}
-function escapeHtml(s){return String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function syncToVisual(){visualEditor.innerHTML=sourceEditor.value}function syncToSource(){sourceEditor.value=visualEditor.innerHTML}
+function commitCurrent(){if(!pages||!currentSlug||!pageDirty)return;const p=pages[currentSlug];p.title=titleInput.value.trim();p.subtitle=subtitleInput.value.trim();p.crumb=crumbInput.value.split('>').map(x=>x.trim()).filter(Boolean);p.mode=modeInput.value;p.aliases=aliasInput.value.split(/\n+/).map(x=>x.trim()).filter(Boolean);p.html=currentHtml();globalDirty=true;setDirty(false);renderPageList();setStatus('Modifiche salvate in memoria. Salva una bozza o esporta quando hai finito.')}
+function loadPage(slug){if(currentSlug&&pageDirty)commitCurrent();currentSlug=slug;const p=pages[slug];if(!p)return;editHeading.textContent=cleanTitle(p.title||slug);slugLabel.textContent=slug;titleInput.value=p.title||'';subtitleInput.value=p.subtitle||'';crumbInput.value=(p.crumb||[]).join(' > ');modeInput.value=p.mode==='dark'?'dark':'paper';aliasInput.value=(p.aliases||[]).join('\n');visualEditor.innerHTML=p.html||'';sourceEditor.value=p.html||'';sourceMode=false;visualEditor.classList.remove('hide');sourceEditor.classList.remove('show');visualTab.classList.add('active');sourceTab.classList.remove('active');previewPanel.classList.remove('show');setDirty(false);renderPageList()}
+function groupName(p){const c=(p.crumb||[]).filter(Boolean);return c[1]||c[0]||'Altro'}
+function renderPageList(){if(!pages)return;const q=pageSearch.value.trim().toLocaleLowerCase('it');const rows=Object.entries(pages).filter(([slug,p])=>{const hay=[slug,p.title,p.subtitle,...(p.crumb||[]),...(p.aliases||[])].join(' ').toLocaleLowerCase('it');return !q||hay.includes(q)});const groups=new Map();rows.forEach(r=>{const g=groupName(r[1]);if(!groups.has(g))groups.set(g,[]);groups.get(g).push(r)});pageList.innerHTML='';for(const [g,items] of groups){const wrap=document.createElement('div');wrap.className='group';const gh=document.createElement('div');gh.className='grouptitle';gh.textContent=g;wrap.appendChild(gh);items.forEach(([slug,p])=>{const b=document.createElement('button');b.className='pageitem'+(slug===currentSlug?' active':'');b.type='button';const path=(p.crumb||[]).join(' › ');b.innerHTML=`<b>${escapeHtml(cleanTitle(p.title||slug))}</b><small>${escapeHtml(path||slug)}</small>`;b.addEventListener('click',()=>loadPage(slug));wrap.appendChild(b)});pageList.appendChild(wrap)}stats.textContent=`${rows.length} di ${Object.keys(pages).length} pagine`}
 function markInputDirty(){setDirty(true)}
-function switchMode(toSource){
-  if(toSource===sourceMode)return;
-  if(toSource){syncToSource();sourceMode=true;visualEditor.classList.add('hide');sourceEditor.classList.add('show');visualTab.classList.remove('active');sourceTab.classList.add('active')}
-  else{syncToVisual();sourceMode=false;visualEditor.classList.remove('hide');sourceEditor.classList.remove('show');visualTab.classList.add('active');sourceTab.classList.remove('active')}
-}
-function buildPreview(){
-  const html=currentHtml();
-  preview.innerHTML=`<h1>${escapeHtml(cleanTitle(titleInput.value))}</h1><div class="subtitle">${escapeHtml(subtitleInput.value)}</div>${html}`;
-  previewPanel.classList.add('show');previewPanel.scrollIntoView({behavior:'smooth',block:'start'});
-}
-function serializePages(){
-  return JSON.stringify(pages).replace(/<\//g,'<\\/').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
-}
-function exportHtml(){
-  if(!pages)return;
-  commitCurrent();
-  const a=originalText.indexOf(START), b=originalText.indexOf(END,a+START.length);
-  if(a<0||b<0){showToast('Impossibile esportare: marcatori mancanti.');return}
-  const newBlock=START+'\nconst PAGES = '+serializePages()+';\n'+END;
-  const updated=originalText.slice(0,a)+newBlock+originalText.slice(b+END.length);
-  const blob=new Blob([updated],{type:'text/html;charset=utf-8'}), url=URL.createObjectURL(blob), link=document.createElement('a');
-  link.href=url;link.download='index.html';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-  globalDirty=false;setStatus('index.html esportato. Il file originale non è stato modificato.');showToast('index.html creato');
-}
+function switchMode(toSource){if(toSource===sourceMode)return;if(toSource){syncToSource();sourceMode=true;visualEditor.classList.add('hide');sourceEditor.classList.add('show');visualTab.classList.remove('active');sourceTab.classList.add('active')}else{syncToVisual();sourceMode=false;visualEditor.classList.remove('hide');sourceEditor.classList.remove('show');visualTab.classList.add('active');sourceTab.classList.remove('active')}}
+function buildPreview(){preview.innerHTML=`<h1>${escapeHtml(cleanTitle(titleInput.value))}</h1><div class="subtitle">${escapeHtml(subtitleInput.value)}</div>${currentHtml()}`;previewPanel.classList.add('show');previewPanel.scrollIntoView({behavior:'smooth',block:'start'})}
+function serializePages(){return JSON.stringify(pages).replace(/<\//g,'<\\/').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029')}
+function buildUpdatedHtml(){commitCurrent();const a=originalText.indexOf(START),b=originalText.indexOf(END,a+START.length);if(a<0||b<0)throw new Error('Marcatori del regolamento mancanti.');const newBlock=START+'\nconst PAGES = '+serializePages()+';\n'+END;return originalText.slice(0,a)+newBlock+originalText.slice(b+END.length)}
+function exportHtml(){if(!pages)return;try{const updated=buildUpdatedHtml(),blob=new Blob([updated],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='index.html';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);setStatus('index.html esportato. Il regolamento online non è stato modificato.');showToast('index.html creato')}catch(e){showToast(e.message)}}
 
-fileInput.addEventListener('change',async()=>{
-  const file=fileInput.files&&fileInput.files[0];if(!file)return;
-  try{
-    const text=await file.text(), parsed=parseRegulation(text);
-    originalText=text;originalFilename=file.name;pages=parsed;currentSlug=null;globalDirty=false;
-    pageSearch.disabled=false;exportBtn.disabled=false;emptyState.style.display='none';editor.classList.add('ready');
-    setStatus(`${file.name} caricato · ${(file.size/1024).toFixed(0)} KB · ${Object.keys(pages).length} pagine riconosciute.`);
-    pageSearch.value='';renderPageList();
-    const first=pages.magizoologia?'magizoologia':Object.keys(pages)[0];if(first)loadPage(first);
-  }catch(err){pages=null;currentSlug=null;pageList.innerHTML='';pageSearch.disabled=true;exportBtn.disabled=true;editor.classList.remove('ready');emptyState.style.display='block';setStatus(err.message);showToast(err.message)}
-});
-pageSearch.addEventListener('input',renderPageList);
-[titleInput,subtitleInput,crumbInput,modeInput,aliasInput].forEach(el=>el.addEventListener('input',markInputDirty));
-visualEditor.addEventListener('input',markInputDirty);sourceEditor.addEventListener('input',markInputDirty);
-visualTab.addEventListener('click',()=>switchMode(false));sourceTab.addEventListener('click',()=>switchMode(true));
-$('#toolbar').addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b)return;e.preventDefault();
-  if(sourceMode){showToast('Passa alla modalità Visuale per usare i pulsanti.');return}
-  visualEditor.focus();
-  if(b.dataset.cmd)document.execCommand(b.dataset.cmd,false,null);
-  if(b.dataset.block)document.execCommand('formatBlock',false,b.dataset.block);
-  setDirty(true);
-});
-$('#linkBtn').addEventListener('click',e=>{
-  e.preventDefault();if(sourceMode)return;
-  const u=prompt('URL del collegamento:');if(u){visualEditor.focus();document.execCommand('createLink',false,u);setDirty(true)}
-});
-savePageBtn.addEventListener('click',()=>{commitCurrent();showToast('Pagina salvata in memoria')});
-previewBtn.addEventListener('click',buildPreview);closePreviewBtn.addEventListener('click',()=>previewPanel.classList.remove('show'));
-resetPageBtn.addEventListener('click',()=>{if(!currentSlug)return;if(confirm('Annullare le modifiche non salvate di questa pagina?'))loadPage(currentSlug)});
-exportBtn.addEventListener('click',exportHtml);
+function openDb(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE)};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+async function idbGet(){try{const db=await openDb();return await new Promise((res,rej)=>{const tx=db.transaction(STORE,'readonly'),r=tx.objectStore(STORE).get(DRAFT_KEY);r.onsuccess=()=>res(r.result||null);r.onerror=()=>rej(r.error)})}catch(e){return null}}
+async function idbPut(v){const db=await openDb();return new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v,DRAFT_KEY);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}
+async function idbDelete(){try{const db=await openDb();return await new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(DRAFT_KEY);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)})}catch(e){}}
+async function saveDraft(){if(!pages)return;commitCurrent();const updated=buildUpdatedHtml();await idbPut({savedAt:Date.now(),baseHash,sourceLabel,originalText,updatedText:updated,pages});globalDirty=false;showToast('Bozza salvata sul browser');setStatus('Bozza locale salvata. Nessuna lettura o scrittura Firestore.')}
+async function checkDraft(){availableDraft=await idbGet();draftBox.classList.toggle('show',!!availableDraft);if(availableDraft){const d=new Date(availableDraft.savedAt);const same=availableDraft.baseHash===baseHash;draftText.textContent=`Bozza del ${d.toLocaleString('it-IT')}${same?' · basata su questa versione':' · ATTENZIONE: basata su una versione diversa del regolamento'}.`}}
+async function restoreDraft(){if(!availableDraft)return;if(availableDraft.baseHash!==baseHash&&!confirm('La bozza deriva da una versione diversa del regolamento online. Ripristinarla comunque?'))return;originalText=availableDraft.originalText;pages=structuredClone(availableDraft.pages);baseHash=availableDraft.baseHash;sourceLabel=availableDraft.sourceLabel+' · bozza';globalDirty=true;activateLoaded();showToast('Bozza ripristinata')}
+async function discardDraft(){await idbDelete();availableDraft=null;draftBox.classList.remove('show');showToast('Bozza eliminata')}
+
+function activateLoaded(){pageSearch.disabled=false;draftBtn.disabled=false;exportBtn.disabled=false;emptyState.style.display='none';editor.classList.add('ready');sourceUrl.textContent=sourceLabel;pageSearch.value='';renderPageList();const first=pages.magizoologia?'magizoologia':Object.keys(pages)[0];if(first)loadPage(first)}
+async function acceptSource(text,label){const parsed=parseRegulation(text);originalText=text;sourceLabel=label;baseHash=await hashText(text);pages=parsed.pages;currentSlug=null;globalDirty=false;activateLoaded();setConn('ok','Collegato');setStatus(`${label} · ${Object.keys(pages).length} pagine riconosciute · formato editor ${parsed.format}.`);await checkDraft()}
+async function loadOnline(){setConn('warn','Connessione…');setStatus('Caricamento del regolamento pubblicato…');try{const u=new URL(REGULATION_URL);u.searchParams.set('_editor',Date.now());const r=await fetch(u.toString(),{cache:'no-store'});if(!r.ok)throw new Error(`Errore HTTP ${r.status}`);const text=await r.text();await acceptSource(text,REGULATION_URL)}catch(e){setConn('warn','Non collegato');setStatus(e.message);emptyState.style.display='block';editor.classList.remove('ready');sourceUrl.textContent=REGULATION_URL;showToast('Caricamento online non riuscito') }}
+
+reloadBtn.addEventListener('click',()=>{if((globalDirty||pageDirty)&&!confirm('Ricaricare il regolamento online e perdere le modifiche non salvate in bozza?'))return;loadOnline()});
+fileInput.addEventListener('change',async()=>{const file=fileInput.files&&fileInput.files[0];if(!file)return;try{await acceptSource(await file.text(),'File locale · '+file.name)}catch(e){setConn('warn','File non valido');setStatus(e.message);showToast(e.message)}});
+pageSearch.addEventListener('input',renderPageList);[titleInput,subtitleInput,crumbInput,modeInput,aliasInput].forEach(el=>el.addEventListener('input',markInputDirty));visualEditor.addEventListener('input',markInputDirty);sourceEditor.addEventListener('input',markInputDirty);visualTab.addEventListener('click',()=>switchMode(false));sourceTab.addEventListener('click',()=>switchMode(true));
+$('#toolbar').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;e.preventDefault();if(sourceMode){showToast('Passa alla modalità Visuale per usare i pulsanti.');return}visualEditor.focus();if(b.dataset.cmd)document.execCommand(b.dataset.cmd,false,null);if(b.dataset.block)document.execCommand('formatBlock',false,b.dataset.block);setDirty(true)});
+$('#linkBtn').addEventListener('click',e=>{e.preventDefault();if(sourceMode)return;const u=prompt('URL del collegamento:');if(u){visualEditor.focus();document.execCommand('createLink',false,u);setDirty(true)}});
+savePageBtn.addEventListener('click',()=>{commitCurrent();showToast('Pagina salvata in memoria')});previewBtn.addEventListener('click',buildPreview);closePreviewBtn.addEventListener('click',()=>previewPanel.classList.remove('show'));resetPageBtn.addEventListener('click',()=>{if(!currentSlug)return;if(confirm('Annullare le modifiche non salvate di questa pagina?'))loadPage(currentSlug)});draftBtn.addEventListener('click',saveDraft);restoreDraftBtn.addEventListener('click',restoreDraft);discardDraftBtn.addEventListener('click',discardDraft);exportBtn.addEventListener('click',exportHtml);
+publishBtn.addEventListener('click',()=>{showToast('Pubblicazione diretta: prossimo collegamento Firebase Auth + Cloud Function');setStatus('Il pulsante Pubblica è predisposto, ma non contiene credenziali GitHub. Va collegato in sicurezza tramite Firebase Auth + Cloud Function.')});
 window.addEventListener('beforeunload',e=>{if(globalDirty||pageDirty){e.preventDefault();e.returnValue=''}});
+sourceUrl.textContent=REGULATION_URL;loadOnline();
 })();
 </script>
 </body>
